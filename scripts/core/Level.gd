@@ -1,7 +1,8 @@
 extends Node2D
 class_name Level
 
-## Configura la escena de nivel y posiciona entidades sobre un grid 5x5.
+## Configura la escena de nivel y posiciona entidades sobre un grid definido por constantes.
+const Consts = preload("res://scripts/utils/constants.gd")
 
 @onready var tile_map: TileMap = %GroundTileMap
 @onready var player: Player = %Player
@@ -13,13 +14,16 @@ func _ready() -> void:
     """Genera el tilemap base y alinea las entidades al grid."""
     _populate_tile_map()
     _align_entities()
+    GameManager.start_level()
+
 
 func _populate_tile_map() -> void:
-    """Rellena el TileMap con un patrón sencillo de 5x5 celdas."""
+    """Rellena el TileMap con un patrón sencillo de GRID_WIDTH x GRID_HEIGHT celdas."""
     tile_map.clear()
-    for x in range(GameConstants.GRID_SIZE.x):
-        for y in range(GameConstants.GRID_SIZE.y):
+    for x in range(Consts.GRID_WIDTH):
+        for y in range(Consts.GRID_HEIGHT):
             tile_map.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
+
 
 func _align_entities() -> void:
     """Reposiciona jugador, enemigo y bloque en el grid inicial."""

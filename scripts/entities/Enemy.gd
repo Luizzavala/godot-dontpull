@@ -2,10 +2,12 @@ extends CharacterBody2D
 class_name Enemy
 
 ## Implementa una IA simple con patrullaje y persecución básica del jugador.
+const Enums = preload("res://scripts/utils/enums.gd")
+const Consts = preload("res://scripts/utils/constants.gd")
+const ENEMY_STEP_TIME := 0.35
+const MOVE_SPEED := Consts.TILE_SIZE / ENEMY_STEP_TIME
 
-const MOVE_SPEED := GameConstants.TILE_SIZE / GameConstants.ENEMY_STEP_TIME
-
-var current_state: GameEnums.EnemyState = GameEnums.EnemyState.PATROL
+var current_state: Enums.EnemyState = Enums.EnemyState.PATROL
 var target_position: Vector2
 var patrol_cooldown := 0.0
 
@@ -19,17 +21,17 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
     """Actualiza la lógica de IA en cada frame de física."""
-    if current_state != GameEnums.EnemyState.DEAD:
+    if current_state != Enums.EnemyState.DEAD:
         if _should_chase():
-            current_state = GameEnums.EnemyState.CHASE
-        elif current_state == GameEnums.EnemyState.CHASE:
-            current_state = GameEnums.EnemyState.PATROL
+            current_state = Enums.EnemyState.CHASE
+        elif current_state == Enums.EnemyState.CHASE:
+            current_state = Enums.EnemyState.PATROL
     match current_state:
-        GameEnums.EnemyState.PATROL:
+        Enums.EnemyState.PATROL:
             _process_patrol_state(delta)
-        GameEnums.EnemyState.CHASE:
+        Enums.EnemyState.CHASE:
             _process_chase_state(delta)
-        GameEnums.EnemyState.DEAD:
+        Enums.EnemyState.DEAD:
             pass
 
 
@@ -42,7 +44,7 @@ func _process_patrol_state(delta: float) -> void:
         for direction in directions:
             if _attempt_step(direction):
                 break
-        patrol_cooldown = GameConstants.ENEMY_STEP_TIME
+        patrol_cooldown = ENEMY_STEP_TIME
     _advance(delta)
 
 
@@ -53,9 +55,11 @@ func _process_chase_state(delta: float) -> void:
         return
     if global_position.is_equal_approx(target_position):
         var delta_pos := GameHelpers.world_to_grid(player.global_position) - GameHelpers.world_to_grid(global_position)
-        var primary_direction := Vector2i(sign(delta_pos.x), 0) if abs(delta_pos.x) > abs(delta_pos.y) else Vector2i(0, sign(delta_pos.y))
+        var x_dir := int(sign(delta_pos.x))
+        var y_dir := int(sign(delta_pos.y))
+        var primary_direction := Vector2i(x_dir, 0) if abs(delta_pos.x) > abs(delta_pos.y) else Vector2i(0, y_dir)
         if primary_direction == Vector2i.ZERO:
-            primary_direction = Vector2i(sign(delta_pos.x), sign(delta_pos.y))
+            primary_direction = Vector2i(x_dir, y_dir)
         if not _attempt_step(primary_direction):
             var alternatives := [Vector2i(0, -1), Vector2i(0, 1), Vector2i(-1, 0), Vector2i(1, 0)]
             alternatives.shuffle()
@@ -74,7 +78,7 @@ func _advance(delta: float) -> void:
 
 func _attempt_step(direction: Vector2i) -> bool:
     """Calcula un destino potencial y valida colisiones básicas."""
-    var destination := target_position + Vector2(direction) * GameConstants.TILE_SIZE
+    var destination := target_position + Vector2(direction) * Consts.TILE_SIZE
     if GameHelpers.find_node_at_position("blocks", destination):
         return false
     target_position = destination
@@ -92,6 +96,6 @@ func _should_chase() -> bool:
 
 func set_dead_state() -> void:
     """Activa el estado de muerte y notifica al GameManager."""
-    current_state = GameEnums.EnemyState.DEAD
+    current_state = Enums.EnemyState.DEAD
     GameManager.on_enemy_defeated(self)
     queue_free()
