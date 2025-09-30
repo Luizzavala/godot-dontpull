@@ -30,6 +30,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
   - Lógica en grid discreto (TileMap).
   - Sistema de colisiones y empuje de bloques.
   - FSM de Jugador y Enemigos.
+  - Input Map unificado (`move_*` + `ui_*`) para soportar teclado y gamepad.
 - **UI Layer**
   - HUD: score, vidas, timer.
   - Menú inicial y selección de nivel.

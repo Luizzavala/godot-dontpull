@@ -19,7 +19,7 @@ stateDiagram-v2
 - Score acumulado  
 
 **Acciones:** mover, empujar, morir.
-- Entrada soportada: WASD, flechas direccionales y gamepad (deadzone 0.2).
+- Entrada soportada: acciones `move_*`, `ui_*`, teclas WASD, flechas direccionales y gamepad (D-pad y sticks, deadzone 0.2).
 
 ---
 
