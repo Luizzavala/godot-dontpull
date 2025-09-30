@@ -36,4 +36,4 @@ func _align_entities() -> void:
     block.target_position = block.global_position
     enemy.global_position = GameHelpers.grid_to_world(enemy_cell)
     enemy.target_position = enemy.global_position
-    hud.global_position = Vector2.ZERO
+    hud.offset = Vector2.ZERO
