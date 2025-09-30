@@ -1,0 +1,13 @@
+# Ignore everything by default to ensure only curated level data is tracked
+*
+
+# Allow directory structure
+!*/
+
+# Keep this ignore file and official JSON level definitions
+!.gitignore
+!*.json
+
+# Explicitly ignore common temporary files
+*.bak
+*.tmp
