@@ -1,0 +1,1 @@
+Este archivo documenta que "placeholder_sprites.zip" debe almacenarse fuera del repositorio. Consulte la documentación del README para recuperar el paquete.
