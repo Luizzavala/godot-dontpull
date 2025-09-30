@@ -18,7 +18,8 @@ stateDiagram-v2
 - Vidas  
 - Score acumulado  
 
-**Acciones:** mover, empujar, morir.  
+**Acciones:** mover, empujar, morir.
+- Entrada soportada: WASD, flechas direccionales y gamepad (deadzone 0.2).
 
 ---
 
