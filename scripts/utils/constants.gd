@@ -1,4 +1,18 @@
-## Conjunto de constantes globales para medidas básicas del grid.
+## Centraliza las constantes numéricas y rutas compartidas por el proyecto.
 const TILE_SIZE := 64.0
 const GRID_WIDTH := 5
 const GRID_HEIGHT := 5
+const PLAYER_START := Vector2i(1, 2)
+const BLOCK_START := Vector2i(2, 2)
+const ENEMY_START := Vector2i(3, 2)
+const PLAYER_MOVE_STEP_TIME := 0.15
+const ENEMY_STEP_TIME := 0.35
+const BLOCK_SLIDE_TIME := 0.2
+const STEP_SCORE := 1
+const ENEMY_SCORE := 25
+const BLOCK_KILL_SCORE := 10
+const START_LIVES := 3
+const ENEMY_CHASE_RANGE := 2
+const CARDINAL_DIRECTIONS := [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
+const LEVEL_SCENE_PATH := "res://scenes/core/Level.tscn"
+const MAIN_MENU_SCENE_PATH := "res://scenes/core/MainMenu.tscn"

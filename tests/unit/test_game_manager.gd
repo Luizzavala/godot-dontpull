@@ -1,9 +1,10 @@
+## TestGameManager valida la API básica del GameManager.
 extends Node
-
-## Pruebas unitarias para validar la API básica del GameManager.
 const GameManagerScript = preload("res://scripts/core/GameManager.gd")
+const Consts = preload("res://scripts/utils/constants.gd")
 
 func run_tests() -> Array:
+    """Ejecuta los tests del GameManager y devuelve los resultados."""
     return [
         _test_register_player(),
         _test_add_score_emits_signal(),
@@ -24,8 +25,8 @@ func _test_add_score_emits_signal() -> Dictionary:
     var manager: Node = GameManagerScript.new()
     var emitted_values: Array = []
     manager.score_changed.connect(func(value: int): emitted_values.append(value))
-    manager.add_score(5)
+    manager.add_score(Consts.STEP_SCORE)
     return {
         "name": "GameManager emite score_changed al sumar puntos",
-        "passed": emitted_values == [5],
+        "passed": emitted_values == [Consts.STEP_SCORE],
     }

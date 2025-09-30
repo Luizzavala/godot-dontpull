@@ -1,12 +1,13 @@
+## Block gestiona el comportamiento de los bloques empujables en el grid.
 extends Area2D
 class_name Block
 
-## Gestiona el comportamiento de los bloques empujables en el grid.
 const Enums = preload("res://scripts/utils/enums.gd")
 const Consts = preload("res://scripts/utils/constants.gd")
-const SLIDE_TIME := 0.2
+const GameHelpers = preload("res://scripts/utils/helpers.gd")
+const SLIDE_TIME := Consts.BLOCK_SLIDE_TIME
 const SLIDE_SPEED := Consts.TILE_SIZE / SLIDE_TIME
-const BLOCK_KILL_SCORE := 10
+const BLOCK_KILL_SCORE := Consts.BLOCK_KILL_SCORE
 
 var current_state: Enums.BlockState = Enums.BlockState.STATIC
 var target_position: Vector2

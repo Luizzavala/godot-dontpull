@@ -1,9 +1,9 @@
+## TestPlayerState comprueba que la enumeración del jugador esté completa.
 extends Node
-
-## Pruebas unitarias simples para validar las enumeraciones del jugador.
 const Enums = preload("res://scripts/utils/enums.gd")
 
 func run_tests() -> Array:
+    """Ejecuta las pruebas que validan la enumeración PlayerState."""
     return [
         _test_player_states_exist(),
     ]

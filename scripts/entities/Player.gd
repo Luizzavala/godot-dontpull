@@ -1,10 +1,11 @@
+## Player controla el movimiento en grid del jugador y su interacción con bloques y enemigos.
 extends CharacterBody2D
 class_name Player
 
-## Controla el movimiento en grid del jugador y la interacción con bloques.
 const Enums = preload("res://scripts/utils/enums.gd")
 const Consts = preload("res://scripts/utils/constants.gd")
-const MOVE_STEP_TIME := 0.15
+const GameHelpers = preload("res://scripts/utils/helpers.gd")
+const MOVE_STEP_TIME := Consts.PLAYER_MOVE_STEP_TIME
 const MOVE_SPEED := Consts.TILE_SIZE / MOVE_STEP_TIME
 
 var current_state: Enums.PlayerState = Enums.PlayerState.IDLE

@@ -1,8 +1,9 @@
+## Level configura la escena de juego y posiciona entidades sobre un grid común.
 extends Node2D
 class_name Level
 
-## Configura la escena de nivel y posiciona entidades sobre un grid definido por constantes.
 const Consts = preload("res://scripts/utils/constants.gd")
+const GameHelpers = preload("res://scripts/utils/helpers.gd")
 
 @onready var tile_map: TileMap = %GroundTileMap
 @onready var player: Player = %Player
@@ -27,13 +28,10 @@ func _populate_tile_map() -> void:
 
 func _align_entities() -> void:
     """Reposiciona jugador, enemigo y bloque en el grid inicial."""
-    var player_cell := Vector2i(1, 2)
-    var block_cell := Vector2i(2, 2)
-    var enemy_cell := Vector2i(3, 2)
-    player.global_position = GameHelpers.grid_to_world(player_cell)
+    player.global_position = GameHelpers.grid_to_world(Consts.PLAYER_START)
     player.target_position = player.global_position
-    block.global_position = GameHelpers.grid_to_world(block_cell)
+    block.global_position = GameHelpers.grid_to_world(Consts.BLOCK_START)
     block.target_position = block.global_position
-    enemy.global_position = GameHelpers.grid_to_world(enemy_cell)
+    enemy.global_position = GameHelpers.grid_to_world(Consts.ENEMY_START)
     enemy.target_position = enemy.global_position
     hud.offset = Vector2.ZERO
