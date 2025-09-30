@@ -2,15 +2,17 @@ extends Object
 class_name GameHelpers
 
 ## Proporciona utilidades compartidas para coordenadas y búsqueda de nodos.
+const Consts = preload("res://scripts/utils/constants.gd")
+
 static func grid_to_world(grid_position: Vector2i) -> Vector2:
     """Convierte una posición de grid a coordenadas globales."""
-    return Vector2(grid_position) * GameConstants.TILE_SIZE + Vector2.ONE * (GameConstants.TILE_SIZE * 0.5)
+    return Vector2(grid_position) * Consts.TILE_SIZE + Vector2.ONE * (Consts.TILE_SIZE * 0.5)
 
 
 static func world_to_grid(world_position: Vector2) -> Vector2i:
     """Convierte una posición global a coordenadas del grid."""
-    var adjusted := world_position - Vector2.ONE * (GameConstants.TILE_SIZE * 0.5)
-    return Vector2i(round(adjusted.x / GameConstants.TILE_SIZE), round(adjusted.y / GameConstants.TILE_SIZE))
+    var adjusted := world_position - Vector2.ONE * (Consts.TILE_SIZE * 0.5)
+    return Vector2i(round(adjusted.x / Consts.TILE_SIZE), round(adjusted.y / Consts.TILE_SIZE))
 
 
 static func find_node_at_position(group_name: StringName, world_position: Vector2) -> Node:

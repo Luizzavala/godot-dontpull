@@ -15,17 +15,20 @@ func _ready() -> void:
     GameManager.score_changed.connect(_on_score_changed)
     GameManager.lives_changed.connect(_on_lives_changed)
     GameManager.level_started.connect(_on_level_started)
-    GameManager.register_hud()
+    GameManager.register_hud(self)
+
 
 func _on_score_changed(value: int) -> void:
     """Actualiza el label de score cuando cambia el valor."""
     score_label.text = str(value)
     emit_signal("score_updated", value)
 
+
 func _on_lives_changed(value: int) -> void:
     """Actualiza el label de vidas cuando cambia el valor."""
     lives_label.text = str(value)
     emit_signal("lives_updated", value)
+
 
 func _on_level_started(level_name: String) -> void:
     """Muestra el nombre del nivel activo."""

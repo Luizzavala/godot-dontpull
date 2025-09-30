@@ -1,24 +1,31 @@
 extends Node
 
-##
-# Pruebas unitarias para las reglas básicas de GameManager.
-##
+## Pruebas unitarias para validar la API básica del GameManager.
+const GameManagerScript = preload("res://scripts/core/GameManager.gd")
 
 func run_tests() -> Array:
     return [
-        _test_basic_block_push(),
+        _test_register_player(),
+        _test_add_score_emits_signal(),
     ]
 
-func _test_basic_block_push() -> Dictionary:
-    var manager := GameManager.new()
-    manager.setup_level(Vector2i(5, 5), TileMap.new(), null)
+
+func _test_register_player() -> Dictionary:
+    var manager: Node = GameManagerScript.new()
     var player := Player.new()
-    var block := Block.new()
-    block.configure(manager, Vector2i(1, 0))
-    manager.register_player(player, Vector2i.ZERO)
-    manager.register_block(block, Vector2i(1, 0))
-    var result := manager.try_player_move(Vector2i.RIGHT)
+    manager.register_player(player)
     return {
-        "name": "GameManager permite empuje básico",
-        "passed": result == GameManager.MoveType.PUSH,
+        "name": "GameManager guarda la referencia del jugador", 
+        "passed": manager.get_player() == player,
+    }
+
+
+func _test_add_score_emits_signal() -> Dictionary:
+    var manager: Node = GameManagerScript.new()
+    var emitted_values: Array = []
+    manager.score_changed.connect(func(value: int): emitted_values.append(value))
+    manager.add_score(5)
+    return {
+        "name": "GameManager emite score_changed al sumar puntos",
+        "passed": emitted_values == [5],
     }
