@@ -1,35 +1,105 @@
 ; Engine configuration file.
-; It's best edited using the editor.
-; If you edit it manually, please read the documentation.
+; It's best edited using the editor UI and not directly,
+; since the parameters that go here are not all obvious.
+;
+; Format:
+;   [section] ; section goes between []
+;   param=value ; assign values to parameters
 
 config_version=5
 
-[_global_script_classes]
-
-[_global_script_class_icons]
-
 [application]
+
 config/name="Don't Pull Clone"
 run/main_scene="res://scenes/core/MainMenu.tscn"
 config/features=PackedStringArray("4.5")
 
+[autoload]
+
+GameManager="*res://scripts/core/GameManager.gd"
+
 [display]
+
 window/size/viewport_width=640
 window/size/viewport_height=640
 window/stretch/mode="canvas_items"
 window/stretch/aspect="expand"
 
+[dotnet]
+
+project/assembly_name="Don-t Pull Clone"
+
 [input]
-move_up={"deadzone":0.5,"events":[{"type":"key","keycode":87,"physical_keycode":87,"unicode":119,"echo":false},{"type":"key","keycode":4194320,"physical_keycode":4194320,"unicode":0,"echo":false}]}
-move_down={"deadzone":0.5,"events":[{"type":"key","keycode":83,"physical_keycode":83,"unicode":115,"echo":false},{"type":"key","keycode":4194322,"physical_keycode":4194322,"unicode":0,"echo":false}]}
-move_left={"deadzone":0.5,"events":[{"type":"key","keycode":65,"physical_keycode":65,"unicode":97,"echo":false},{"type":"key","keycode":4194319,"physical_keycode":4194319,"unicode":0,"echo":false}]}
-move_right={"deadzone":0.5,"events":[{"type":"key","keycode":68,"physical_keycode":68,"unicode":100,"echo":false},{"type":"key","keycode":4194321,"physical_keycode":4194321,"unicode":0,"echo":false}]}
+
+move_up={
+"deadzone": 0.5,
+"events": [{
+"echo": false,
+"keycode": 87,
+"physical_keycode": 87,
+"type": "key",
+"unicode": 119
+}, {
+"echo": false,
+"keycode": 4194320,
+"physical_keycode": 4194320,
+"type": "key",
+"unicode": 0
+}]
+}
+move_down={
+"deadzone": 0.5,
+"events": [{
+"echo": false,
+"keycode": 83,
+"physical_keycode": 83,
+"type": "key",
+"unicode": 115
+}, {
+"echo": false,
+"keycode": 4194322,
+"physical_keycode": 4194322,
+"type": "key",
+"unicode": 0
+}]
+}
+move_left={
+"deadzone": 0.5,
+"events": [{
+"echo": false,
+"keycode": 65,
+"physical_keycode": 65,
+"type": "key",
+"unicode": 97
+}, {
+"echo": false,
+"keycode": 4194319,
+"physical_keycode": 4194319,
+"type": "key",
+"unicode": 0
+}]
+}
+move_right={
+"deadzone": 0.5,
+"events": [{
+"echo": false,
+"keycode": 68,
+"physical_keycode": 68,
+"type": "key",
+"unicode": 100
+}, {
+"echo": false,
+"keycode": 4194321,
+"physical_keycode": 4194321,
+"type": "key",
+"unicode": 0
+}]
+}
 
 [physics]
+
 common/enable_pause_aware_picking=true
 
 [rendering]
-textures/canvas_textures/default_filter=false
 
-[autoload]
-GameManager="*res://scripts/core/GameManager.gd"
+textures/canvas_textures/default_filter=false
