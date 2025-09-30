@@ -1,0 +1,16 @@
+# Ignore generated snapshots and dumps
+*.snap
+*.snapshot
+*.dump
+*.tmp
+*.log
+
+# Coverage outputs
+coverage/
+coverage-*/
+*.coverage
+*.xml
+*.html
+
+# Keep only GDScript tests
+!*.gd

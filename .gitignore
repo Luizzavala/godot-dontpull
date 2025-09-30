@@ -1,0 +1,25 @@
+# Godot project metadata
+.godot/
+.import/
+*.import
+*.uid
+
+# C# build artifacts
+bin/
+obj/
+.mono/
+
+# IDE/editor configuration
+.vscode/
+.idea/
+.vs/
+*.suo
+*.user
+*.userprefs
+
+# System and temporary files
+.DS_Store
+Thumbs.db
+*.log
+*.tmp
+~*

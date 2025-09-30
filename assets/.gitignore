@@ -1,0 +1,15 @@
+# Ignore source assets kept out of version control
+raw/
+
+# Large editable binaries
+*.psd
+*.psb
+*.xcf
+*.kra
+*.ai
+*.blend
+*.max
+*.mb
+*.ma
+
+# Allow finished game-ready assets by default (e.g. .png, .ogg, .wav, .ttf)
