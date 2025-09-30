@@ -1,6 +1,6 @@
 # Don’t Pull Clone (Godot 4.5)
 
-Clon educativo del juego arcade **Don’t Pull** (Capcom, 1991, parte de *Three Wonders*), desarrollado en Godot 4.5.  
+Clon educativo del juego arcade **Don’t Pull** (Capcom, 1991, parte de *Three Wonders*), desarrollado en Godot 4.5.
 El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura modular y extensible.
 
 ⚠️ **Nota:** Proyecto con fines educativos. No distribuye ni reutiliza assets originales de Capcom.
@@ -15,6 +15,14 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 - [x] IA básica de enemigos
 - [x] HUD y sistema de score
 - [ ] Niveles iniciales
+- [ ] Colisión de bloques con enemigos (enemigos aplastados)
+- [ ] Power-ups y sistema de bonus (frutas/ítems)
+- [ ] Niveles iniciales (carga desde JSON en /levels)
+- [ ] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
+- [ ] Sistema de Game Over y reinicio
+- [ ] Menú principal funcional
+- [ ] Pulido visual y assets finales (sprites, audio)
+- [ ] Testing y balance (sandbox + pruebas de integración)
 
 ---
 
