@@ -1,0 +1,1 @@
+Este archivo es un marcador de posición textual para "placeholder_tile.png". Incluir el sprite binario real fuera del repositorio.
