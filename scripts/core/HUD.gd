@@ -1,7 +1,6 @@
+## HUD gestiona la visualización del score, vidas y nombre del nivel mediante señales.
 extends CanvasLayer
 class_name HUD
-
-## Gestiona la visualización del score, vidas y nombre del nivel mediante señales.
 
 signal score_updated(new_score: int)
 signal lives_updated(new_lives: int)

@@ -1,7 +1,7 @@
+## GameHelpers proporciona utilidades comunes para conversiones de grid y búsqueda de nodos.
 extends Object
 class_name GameHelpers
 
-## Proporciona utilidades compartidas para coordenadas y búsqueda de nodos.
 const Consts = preload("res://scripts/utils/constants.gd")
 
 static func grid_to_world(grid_position: Vector2i) -> Vector2:

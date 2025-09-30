@@ -1,6 +1,5 @@
+## TestPlayerStates valida las enumeraciones del jugador.
 extends RefCounted
-
-## Pruebas unitarias simples para validar las enumeraciones del jugador.
 const Enums = preload("res://scripts/utils/enums.gd")
 
 func test_player_states() -> bool:

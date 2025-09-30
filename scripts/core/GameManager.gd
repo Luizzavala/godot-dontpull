@@ -1,11 +1,7 @@
+## GameManager administra el estado global del juego y expone señales a las escenas.
 extends Node
 
-## Administra el estado global del juego y expone señales a las escenas.
-const STEP_SCORE := 1
-const ENEMY_SCORE := 25
-const START_LIVES := 3
-const LEVEL_SCENE_PATH := "res://scenes/core/Level.tscn"
-const MAIN_MENU_SCENE_PATH := "res://scenes/core/MainMenu.tscn"
+const Consts = preload("res://scripts/utils/constants.gd")
 
 signal score_changed(new_score: int)
 signal lives_changed(new_lives: int)
@@ -13,35 +9,29 @@ signal level_started(level_name: String)
 signal game_over()
 
 var _player: Player
-var _hud: HUD
 var _score := 0
-var _lives := START_LIVES
+var _lives := Consts.START_LIVES
 var _enemies: Array[Enemy] = []
 
 func _ready() -> void:
     """Emite el estado inicial al arrancar el autoload."""
-    get_tree().connect("scene_changed", Callable(self, "_on_scene_changed"))
+    get_tree().scene_changed.connect(_on_scene_changed)
     score_changed.emit(_score)
     lives_changed.emit(_lives)
-
 
 func register_player(player: Player) -> void:
     """Guarda la referencia del jugador activo."""
     _player = player
 
-
-func register_hud(hud: HUD) -> void:
+func register_hud(_hud: HUD) -> void:
     """Asocia el HUD activo y le envía el estado global."""
-    _hud = hud
     score_changed.emit(_score)
     lives_changed.emit(_lives)
-
 
 func add_score(value: int) -> void:
     """Incrementa el score global y notifica el cambio."""
     _score += value
     score_changed.emit(_score)
-
 
 func set_lives(value: int) -> void:
     """Actualiza las vidas del jugador y dispara la señal correspondiente."""
@@ -50,26 +40,20 @@ func set_lives(value: int) -> void:
     if _lives <= 0:
         game_over.emit()
 
-
 func start_level() -> void:
     """Propaga el inicio del nivel actual al HUD."""
-    if get_tree().current_scene:
-        level_started.emit(get_tree().current_scene.name)
-    else:
-        level_started.emit("")
-
+    var current_scene := get_tree().current_scene
+    level_started.emit(current_scene.name if current_scene else "")
 
 func register_enemy(enemy: Enemy) -> void:
     """Añade enemigos activos para referencia rápida."""
     if enemy not in _enemies:
         _enemies.append(enemy)
 
-
 func on_enemy_defeated(enemy: Enemy) -> void:
     """Elimina la referencia del enemigo y suma score."""
     _enemies.erase(enemy)
-    add_score(ENEMY_SCORE)
-
+    add_score(Consts.ENEMY_SCORE)
 
 func on_player_defeated() -> void:
     """Reduce las vidas del jugador y gestiona el reinicio o fin de partida."""
@@ -79,35 +63,28 @@ func on_player_defeated() -> void:
     else:
         return_to_menu()
 
-
 func restart_level() -> void:
     """Recarga el nivel actual si existe."""
-    if get_tree().current_scene and get_tree().current_scene.scene_file_path == LEVEL_SCENE_PATH:
+    if get_tree().current_scene and get_tree().current_scene.scene_file_path == Consts.LEVEL_SCENE_PATH:
         get_tree().reload_current_scene()
-
 
 func return_to_menu() -> void:
     """Regresa al menú principal y restablece score y vidas."""
     _score = 0
-    _lives = START_LIVES
+    _lives = Consts.START_LIVES
     score_changed.emit(_score)
     lives_changed.emit(_lives)
-    get_tree().change_scene_to_file(MAIN_MENU_SCENE_PATH)
-
+    get_tree().change_scene_to_file(Consts.MAIN_MENU_SCENE_PATH)
 
 func get_player() -> Player:
     """Devuelve el jugador registrado."""
     return _player
 
-
 func notify_player_step() -> void:
     """Suma score por cada paso válido del jugador."""
-    add_score(STEP_SCORE)
-
+    add_score(Consts.STEP_SCORE)
 
 func _on_scene_changed(new_scene: Node) -> void:
     """Detecta cambios de escena para iniciar niveles automáticamente."""
-    if new_scene and new_scene.scene_file_path == LEVEL_SCENE_PATH:
+    if new_scene and new_scene.scene_file_path == Consts.LEVEL_SCENE_PATH:
         start_level()
-    else:
-        pass
