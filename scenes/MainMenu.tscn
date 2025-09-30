@@ -1,0 +1,28 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/MainMenu.gd" id="1"]
+
+[node name="MainMenu" type="Control"]
+script = ExtResource("1")
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="MarginContainer" type="MarginContainer" parent="MainMenu"]
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = -16.0
+offset_bottom = -16.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MainMenu/MarginContainer"]
+alignment = 1
+size_flags_vertical = 3
+
+[node name="Title" type="Label" parent="MainMenu/MarginContainer/VBoxContainer"]
+text = "Don't Pull Clone"
+
+[node name="StartButton" type="Button" parent="MainMenu/MarginContainer/VBoxContainer"]
+text = "Iniciar"

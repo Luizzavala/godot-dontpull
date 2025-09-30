@@ -9,7 +9,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 
 ## 🚀 Estado del Proyecto
 - [x] Documentación inicial
-- [ ] Setup Godot project
+- [x] Setup Godot project
 - [ ] Prototipo movimiento jugador
 - [ ] Empuje de bloques
 - [ ] IA básica de enemigos
