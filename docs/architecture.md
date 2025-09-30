@@ -23,7 +23,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
 ---
 
 ## Componentes principales
-- **Core Engine (Godot 4.x)**
+- **Core Engine (Godot 4.5)**
   - Gestión de escenas y nodos.
   - Render 2D, TileMap, animaciones.
 - **Gameplay Layer**
