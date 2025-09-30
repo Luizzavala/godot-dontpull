@@ -20,7 +20,7 @@ var _enemies: Array[Enemy] = []
 
 func _ready() -> void:
     """Emite el estado inicial al arrancar el autoload."""
-    get_tree().connect("current_scene_changed", Callable(self, "_on_current_scene_changed"))
+    get_tree().connect("scene_changed", Callable(self, "_on_scene_changed"))
     score_changed.emit(_score)
     lives_changed.emit(_lives)
 
@@ -105,7 +105,7 @@ func notify_player_step() -> void:
     add_score(STEP_SCORE)
 
 
-func _on_current_scene_changed(new_scene: Node) -> void:
+func _on_scene_changed(new_scene: Node) -> void:
     """Detecta cambios de escena para iniciar niveles automáticamente."""
     if new_scene and new_scene.scene_file_path == LEVEL_SCENE_PATH:
         start_level()
