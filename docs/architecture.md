@@ -68,6 +68,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
   - Jugador (Player.tscn).
   - Enemigos (Enemy.tscn).
   - HUD (HUD.tscn).
+  - `Level.gd` escucha el signal `size_changed` del `Viewport` para recentrar el mapa ante cambios de tamaño.
 - `/scenes/Systems`
   - ScoreManager.gd
   - LevelManager.gd

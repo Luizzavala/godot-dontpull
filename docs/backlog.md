@@ -106,3 +106,9 @@
   - /tests/unit/test_map_centering.gd → validar que el offset del mapa centra el grid en pantalla.
   - /tests/unit/test_out_of_bounds.gd → validar que jugador/bloques no pueden moverse fuera del área jugable.
   - /tests/integration/sandbox_centered_map.tscn → cargar un nivel pequeño y comprobar que aparece centrado con fondo diferenciado.
+
+---
+
+## Migraciones
+
+- NOTIFICATION_RESIZED (Godot 3.x) → reemplazado por signal `size_changed` en Godot 4.x.
