@@ -14,11 +14,18 @@ const PowerUpScene: PackedScene = preload("res://scenes/entities/PowerUp.tscn")
 @onready var block_container: Node2D = %Blocks
 @onready var power_up_container: Node2D = %PowerUps
 @onready var hud: HUD = %HUD
+@onready var non_playable_background: ColorRect = %NonPlayableBackground
+@onready var playable_area_rect: ColorRect = %PlayableArea
+var _current_grid_size: Vector2i = Vector2i(Consts.GRID_WIDTH, Consts.GRID_HEIGHT)
 
 func _ready() -> void:
     """Carga los datos del nivel y posiciona entidades según el layout."""
     _apply_level_data(_load_level_data())
     GameManager.start_level()
+
+func _notification(what: int) -> void:
+    if what == NOTIFICATION_RESIZED:
+        _update_map_layout()
 
 func _load_level_data() -> Dictionary:
     var path: String = level_file if level_file != "" else LevelLoader.get_default_level_path()
@@ -36,6 +43,8 @@ func _apply_level_data(data: Dictionary) -> void:
     var grid_size: Dictionary = _get_dictionary(data, "grid_size")
     var width: int = int(grid_size.get("width", Consts.GRID_WIDTH))
     var height: int = int(grid_size.get("height", Consts.GRID_HEIGHT))
+    _current_grid_size = Vector2i(width, height)
+    _update_map_layout()
     GameHelpers.set_map_bounds(Rect2i(Vector2i.ZERO, Vector2i(width, height)))
     _populate_tile_map(width, height)
     _position_player(_get_dictionary(data, "player"))
@@ -43,6 +52,18 @@ func _apply_level_data(data: Dictionary) -> void:
     _spawn_entities(enemy_container, EnemyScene, _get_array(data, "enemies"), Consts.ENEMY_START)
     _spawn_power_ups(_get_array(data, "power_ups"))
     hud.offset = Vector2.ZERO
+
+func _update_map_layout() -> void:
+    var viewport_size: Vector2 = get_viewport_rect().size
+    var offset: Vector2 = GameHelpers.calculate_center_offset(_current_grid_size, viewport_size)
+    GameHelpers.set_map_offset(offset)
+    tile_map.position = offset
+    if is_instance_valid(non_playable_background):
+        non_playable_background.position = Vector2.ZERO
+        non_playable_background.size = viewport_size
+    if is_instance_valid(playable_area_rect):
+        playable_area_rect.position = offset
+        playable_area_rect.size = Vector2(_current_grid_size) * Consts.TILE_SIZE
 
 func _populate_tile_map(width: int, height: int) -> void:
     tile_map.clear()
