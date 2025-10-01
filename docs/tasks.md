@@ -20,7 +20,7 @@
 - [x] Sistema de transición de niveles
 - [x] Sistema de puntuación arcade y tabla de récords (High Score)
 - [x] Corrección de parseo JSON en HighScoreService
-- [ ] Hooks de música y efectos de sonido (dummy)
+- [x] Hooks de música y efectos de sonido (dummy)
 - [ ] Animaciones retro (dummy)
 - [ ] Pantalla de introducción / attract mode
 - [ ] Balance y dificultad progresiva

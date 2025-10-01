@@ -60,6 +60,9 @@ func request_slide(direction: Vector2i) -> bool:
     _launch_direction = direction
     current_state = Enums.BlockState.LAUNCHED
     _play_launch_feedback()
+    var audio_manager := _get_audio_manager()
+    if audio_manager:
+        audio_manager.play_block_launch()
     return true
 
 
@@ -77,6 +80,9 @@ func destroy_block() -> void:
         return
     current_state = Enums.BlockState.DESTROYED
     _play_destroy_feedback()
+    var audio_manager := _get_audio_manager()
+    if audio_manager:
+        audio_manager.play_block_destroy()
     queue_free()
 
 
@@ -150,3 +156,12 @@ func _play_destroy_feedback() -> void:
         _feedback_tween.kill()
     _feedback_tween = create_tween()
     _feedback_tween.tween_property(self, "modulate:a", 0.0, SLIDE_TIME)
+
+func _get_audio_manager() -> AudioManager:
+    var tree := get_tree()
+    if tree == null:
+        return null
+    var root := tree.root
+    if root == null:
+        return null
+    return root.get_node_or_null("AudioManager") as AudioManager

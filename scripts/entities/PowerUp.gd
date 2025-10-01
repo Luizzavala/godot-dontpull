@@ -25,6 +25,9 @@ func collect() -> void:
     _collected = true
     var bonus: int = score_value if score_value > 0 else _resolve_score_from_type()
     collected.emit(self, bonus)
+    var audio_manager := _get_audio_manager()
+    if audio_manager:
+        audio_manager.play_power_up()
     _apply_score_bonus(bonus)
     queue_free()
 
@@ -45,3 +48,12 @@ func _apply_score_bonus(bonus: int) -> void:
     if bonus == 0:
         return
     GameManager.add_score(bonus)
+
+func _get_audio_manager() -> AudioManager:
+    var tree := get_tree()
+    if tree == null:
+        return null
+    var root := tree.root
+    if root == null:
+        return null
+    return root.get_node_or_null("AudioManager") as AudioManager
