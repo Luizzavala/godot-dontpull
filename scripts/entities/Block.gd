@@ -10,12 +10,14 @@ const BLOCK_KILL_SCORE := Consts.BLOCK_KILL_SCORE
 
 var current_state: Enums.BlockState = Enums.BlockState.STATIC
 var target_position: Vector2
+var _slide_origin: Vector2 = Vector2.ZERO
 var _kill_registered: bool = false
 
 
 func _ready() -> void:
     """Configura la posición objetivo inicial y registra el bloque."""
     target_position = global_position
+    _slide_origin = target_position
     add_to_group("blocks")
     body_entered.connect(_on_body_entered)
 
@@ -37,6 +39,7 @@ func request_slide(direction: Vector2i) -> bool:
     if GameHelpers.find_node_at_position("blocks", destination):
         return false
     _kill_registered = false
+    _slide_origin = target_position
     target_position = destination
     current_state = Enums.BlockState.SLIDING
     return true
@@ -86,3 +89,15 @@ func _finalize_slide() -> void:
         _kill_registered = false
         return
     current_state = Enums.BlockState.STATIC
+    _slide_origin = target_position
+
+
+func occupies_world_position(world_position: Vector2) -> bool:
+    """Indica si el bloque ocupa la casilla solicitada durante o después del deslizamiento."""
+    var tolerance := 1.0
+    if current_state == Enums.BlockState.SLIDING:
+        if target_position.distance_to(world_position) < tolerance:
+            return true
+        if _slide_origin.distance_to(world_position) < tolerance:
+            return true
+    return target_position.distance_to(world_position) < tolerance
