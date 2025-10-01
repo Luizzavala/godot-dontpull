@@ -9,5 +9,9 @@
     "enemies": [
         {"type": "random", "start": [5, 3]},
         {"type": "chaser", "start": [3, 5]}
+    ],
+    "power_ups": [
+        {"type": "fruit", "position": [3, 1]},
+        {"type": "gem", "position": [5, 5], "score": 250}
     ]
 }

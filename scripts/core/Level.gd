@@ -6,11 +6,13 @@ const Consts = preload("res://scripts/utils/constants.gd")
 const LevelLoader = preload("res://scripts/utils/level_loader.gd")
 const EnemyScene: PackedScene = preload("res://scenes/entities/Enemy.tscn")
 const BlockScene: PackedScene = preload("res://scenes/entities/Block.tscn")
+const PowerUpScene: PackedScene = preload("res://scenes/entities/PowerUp.tscn")
 @export var level_file: String = ""
 @onready var tile_map: TileMap = %GroundTileMap
 @onready var player: Player = %Player
 @onready var enemy_container: Node2D = %Enemies
 @onready var block_container: Node2D = %Blocks
+@onready var power_up_container: Node2D = %PowerUps
 @onready var hud: HUD = %HUD
 
 func _ready() -> void:
@@ -38,6 +40,7 @@ func _apply_level_data(data: Dictionary) -> void:
     _position_player(_get_dictionary(data, "player"))
     _spawn_entities(block_container, BlockScene, _get_array(data, "blocks"), Consts.BLOCK_START)
     _spawn_entities(enemy_container, EnemyScene, _get_array(data, "enemies"), Consts.ENEMY_START)
+    _spawn_power_ups(_get_array(data, "power_ups"))
     hud.offset = Vector2.ZERO
 
 func _populate_tile_map(width: int, height: int) -> void:
@@ -61,6 +64,22 @@ func _spawn_entities(container: Node2D, scene: PackedScene, entries: Array, fall
         instance.global_position = world_position
         container.add_child(instance)
         instance.set("target_position", world_position)
+
+func _spawn_power_ups(entries: Array) -> void:
+    _clear_container(power_up_container)
+    for entry: Variant in entries:
+        var grid_position: Vector2i = _extract_position(entry, Vector2i.ZERO)
+        var power_up: PowerUp = PowerUpScene.instantiate() as PowerUp
+        if entry is Dictionary:
+            var entry_dict: Dictionary = entry
+            if entry_dict.has("type"):
+                power_up.power_up_type = StringName(entry_dict["type"])
+            if entry_dict.has("score"):
+                power_up.score_value = int(entry_dict["score"])
+        var world_position: Vector2 = GameHelpers.grid_to_world(grid_position)
+        power_up.global_position = world_position
+        power_up.target_position = world_position
+        power_up_container.add_child(power_up)
 
 func _clear_container(container: Node) -> void:
     for child: Node in container.get_children():

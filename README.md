@@ -16,7 +16,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 - [x] HUD y sistema de score
 - [x] Niveles iniciales
 - [x] Colisión de bloques con enemigos (enemigos aplastados)
-- [ ] Power-ups y sistema de bonus (frutas/ítems)
+- [x] Power-ups y sistema de bonus (frutas/ítems)
 - [x] Niveles iniciales (carga desde JSON en /levels) — warnings de tipado corregidos en Level.gd
 - [ ] Colisión jugador/bloque: **el jugador nunca debe quedar debajo de un bloque** (bloques siempre se priorizan sobre el jugador al empujar/colisionar).
 - [ ] Límites del mapa: agregar **bordes sólidos** que no puedan cruzarse (ni jugador, ni bloques, ni enemigos).

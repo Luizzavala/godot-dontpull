@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/core/Level.gd" id="1"]
 [ext_resource type="PackedScene" path="res://scenes/entities/Player.tscn" id="2"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/entities/Block.tscn" id="4"]
 [ext_resource type="PackedScene" path="res://scenes/core/HUD.tscn" id="5"]
 [ext_resource type="Script" path="res://scripts/core/GameManager.gd" id="6"]
+[ext_resource type="PackedScene" path="res://scenes/entities/PowerUp.tscn" id="7"]
 
 [sub_resource type="Image" id="1"]
 data = {
@@ -49,6 +50,12 @@ unique_name_in_owner = true
 unique_name_in_owner = true
 
 [node name="Block" parent="Blocks" instance=ExtResource("4")]
+unique_name_in_owner = true
+
+[node name="PowerUps" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="PowerUp" parent="PowerUps" instance=ExtResource("7")]
 unique_name_in_owner = true
 
 [node name="HUD" parent="." instance=ExtResource("5")]
