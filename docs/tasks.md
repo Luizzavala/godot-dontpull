@@ -1,0 +1,29 @@
+# 📋 Lista de Tareas (Taskmaster)
+
+- [x] Documentación inicial
+- [x] Setup Godot project
+- [x] Prototipo movimiento jugador
+- [x] Empuje de bloques
+- [x] IA básica de enemigos
+- [x] HUD y sistema de score
+- [x] Niveles iniciales
+- [x] Colisión de bloques con enemigos (enemigos aplastados)
+- [x] Power-ups y sistema de bonus (frutas/ítems)
+- [x] Niveles iniciales (carga desde JSON en /levels) — warnings de tipado corregidos en Level.gd
+- [x] Colisión jugador/bloque
+- [x] Límites del mapa
+- [x] HUD reubicado
+- [x] Mapas centrados y área de no tránsito diferenciada
+- [x] Implementación de niveles originales de Don’t Pull (Capcom)
+- [x] Implementación de mecánicas/gameplay originales de Don’t Pull (Capcom)
+- [x] Ajuste de resolución, escalado y centrado del área jugable
+- [x] Sistema de transición de niveles
+- [x] Sistema de puntuación arcade y tabla de récords (High Score)
+- [x] Corrección de parseo JSON en HighScoreService
+- [ ] Hooks de música y efectos de sonido (dummy)
+- [ ] Animaciones retro (dummy)
+- [ ] Pantalla de introducción / attract mode
+- [ ] Balance y dificultad progresiva
+- [ ] Export estilo arcade
+- [ ] Sistema de Game Over y reinicio
+- [ ] Menú principal funcional

@@ -8,38 +8,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 ---
 
 ## 🚀 Estado del Proyecto
-- [x] Documentación inicial
-- [x] Setup Godot project
-- [x] Prototipo movimiento jugador
-- [x] Empuje de bloques
-- [x] IA básica de enemigos
-- [x] HUD y sistema de score
-- [x] Niveles iniciales
-- [x] Colisión de bloques con enemigos (enemigos aplastados)
-- [x] Power-ups y sistema de bonus (frutas/ítems)
-- [x] Niveles iniciales (carga desde JSON en /levels) — warnings de tipado corregidos en Level.gd
-- [x] Colisión jugador/bloque: **el jugador nunca debe quedar debajo de un bloque** (bloques siempre se priorizan sobre el jugador al empujar/colisionar).
-- [x] Límites del mapa: agregar **bordes sólidos** que no puedan cruzarse (ni jugador, ni bloques, ni enemigos).
-- [x] HUD reubicado:
-  - [x] Score en la **esquina superior derecha**.
-  - [x] Vidas en el **centro inferior**.
-  - [x] Level en la **esquina superior izquierda**.
-  - [x] Timer en el **centro superior** (contando tiempo de cada nivel).
-- [x] Mapas centrados y área de no tránsito diferenciada.
-- [x] Implementación de niveles originales de Don’t Pull (Capcom)
-- [x] Implementación de mecánicas/gameplay originales de Don’t Pull (Capcom)
-- [x] Ajuste de resolución, escalado y centrado del área jugable
-- [x] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
-- [x] Sistema de puntuación arcade y tabla de récords (High Score)
-- [x] Corrección de parseo JSON en HighScoreService
-- [ ] Hooks de música y efectos de sonido (dummy)
-- [ ] Animaciones retro (dummy)
-- [ ] Pantalla de introducción / attract mode
-- [ ] Balance y dificultad progresiva
-- [ ] Export estilo arcade
-- [ ] Sistema de Game Over y reinicio
-- [ ] Menú principal funcional
-
+La lista de tareas ahora se gestiona en [tasks.md](./docs/tasks.md) bajo formato Taskmaster.
 
 ---
 
