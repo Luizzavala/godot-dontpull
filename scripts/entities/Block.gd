@@ -36,6 +36,9 @@ func request_slide(direction: Vector2i) -> bool:
     if current_state != Enums.BlockState.STATIC:
         return false
     var destination: Vector2 = target_position + Vector2(direction) * Consts.TILE_SIZE
+    var destination_grid: Vector2i = GameHelpers.world_to_grid(destination)
+    if not GameHelpers.is_within_bounds(destination_grid):
+        return false
     if GameHelpers.find_node_at_position("blocks", destination):
         return false
     _kill_registered = false

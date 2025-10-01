@@ -60,6 +60,9 @@ func _try_start_move(direction: Vector2i) -> void:
     if direction == Vector2i.ZERO:
         return
     var destination: Vector2 = target_position + Vector2(direction) * Consts.TILE_SIZE
+    var destination_grid: Vector2i = GameHelpers.world_to_grid(destination)
+    if not GameHelpers.is_within_bounds(destination_grid):
+        return
     var block_node: Node = GameHelpers.find_node_at_position("blocks", destination)
     if block_node and block_node is Block:
         if (block_node as Block).request_slide(direction):
