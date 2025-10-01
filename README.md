@@ -28,7 +28,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 - [x] Mapas centrados y área de no tránsito diferenciada.
 - [x] Implementación de niveles originales de Don’t Pull (Capcom)
 - [x] Implementación de mecánicas/gameplay originales de Don’t Pull (Capcom)
-- [ ] Ajuste de resolución, escalado y centrado del área jugable
+- [x] Ajuste de resolución, escalado y centrado del área jugable
 - [ ] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
 - [ ] Sistema de Game Over y reinicio
 - [ ] Menú principal funcional

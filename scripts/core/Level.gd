@@ -76,6 +76,7 @@ func _update_map_layout() -> void:
         playable_area_rect.size = grid_pixel_size
     if is_instance_valid(camera):
         camera.position = offset + grid_pixel_size * 0.5
+        camera.zoom = GameHelpers.calculate_zoom_to_fit(_current_grid_size, viewport_size)
         camera.limit_left = int(offset.x)
         camera.limit_top = int(offset.y)
         camera.limit_right = int(offset.x + grid_pixel_size.x)
@@ -154,3 +155,7 @@ func _get_array(source: Dictionary, key: String) -> Array:
 
 func get_level_name() -> String:
     return _level_name
+
+
+func get_grid_size() -> Vector2i:
+    return _current_grid_size

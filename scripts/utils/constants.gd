@@ -2,6 +2,8 @@
 const TILE_SIZE := 64.0
 const GRID_WIDTH := 5
 const GRID_HEIGHT := 5
+const BASE_RESOLUTION := Vector2i(640, 480)
+const TARGET_ASPECT_RATIO := Vector2(4.0, 3.0)
 const PLAYER_START := Vector2i(1, 2)
 const BLOCK_START := Vector2i(2, 2)
 const ENEMY_START := Vector2i(3, 2)
