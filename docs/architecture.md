@@ -31,6 +31,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
   - Sistema de colisiones y empuje de bloques.
   - FSM de Jugador y Enemigos.
   - Input Map unificado (`move_*` + `ui_*`) para soportar teclado y gamepad.
+  - Utilidades centralizadas en `GameHelpers` (global) para conversión grid ↔ mundo y detección de nodos.
 - **UI Layer**
   - HUD: score, vidas, timer.
   - Menú inicial y selección de nivel.
@@ -49,7 +50,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
 
 ## Flujo principal del juego
 1. **Init →** carga escena `MainMenu`.
-2. **Level Start →** `Level` solicita a `LevelLoader` el layout JSON y spawnea jugador, enemigos y bloques.
+2. **Level Start →** `Level` solicita a `LevelLoader` el layout JSON, usa `GameHelpers` para traducir coordenadas y spawnea jugador, enemigos y bloques.
 3. **Gameplay Loop →**
    - Jugador mueve en grid.
    - Empuje de bloques → bloques deslizan hasta colisión.

@@ -17,7 +17,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 - [x] Niveles iniciales
 - [x] Colisión de bloques con enemigos (enemigos aplastados)
 - [ ] Power-ups y sistema de bonus (frutas/ítems)
-- [x] Niveles iniciales (carga desde JSON en /levels)
+- [x] Niveles iniciales (carga desde JSON en /levels) — warnings de tipado corregidos en Level.gd
 - [ ] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
 - [ ] Sistema de Game Over y reinicio
 - [ ] Menú principal funcional

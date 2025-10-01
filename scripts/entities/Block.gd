@@ -4,14 +4,13 @@ class_name Block
 
 const Enums = preload("res://scripts/utils/enums.gd")
 const Consts = preload("res://scripts/utils/constants.gd")
-const GameHelpers = preload("res://scripts/utils/helpers.gd")
 const SLIDE_TIME := Consts.BLOCK_SLIDE_TIME
 const SLIDE_SPEED := Consts.TILE_SIZE / SLIDE_TIME
 const BLOCK_KILL_SCORE := Consts.BLOCK_KILL_SCORE
 
 var current_state: Enums.BlockState = Enums.BlockState.STATIC
 var target_position: Vector2
-var _kill_registered := false
+var _kill_registered: bool = false
 
 
 func _ready() -> void:
@@ -34,7 +33,7 @@ func request_slide(direction: Vector2i) -> bool:
     """Inicia el deslizamiento del bloque si la casilla destino está libre."""
     if current_state != Enums.BlockState.STATIC:
         return false
-    var destination := target_position + Vector2(direction) * Consts.TILE_SIZE
+    var destination: Vector2 = target_position + Vector2(direction) * Consts.TILE_SIZE
     if GameHelpers.find_node_at_position("blocks", destination):
         return false
     _kill_registered = false
@@ -81,9 +80,9 @@ func _finalize_slide() -> void:
     if _kill_registered:
         _kill_registered = false
         return
-    var enemy := GameHelpers.find_node_at_position("enemies", target_position)
-    if enemy and enemy is Enemy:
-        _resolve_enemy_collision(enemy as Enemy)
+    var enemy_node: Node = GameHelpers.find_node_at_position("enemies", target_position)
+    if enemy_node and enemy_node is Enemy:
+        _resolve_enemy_collision(enemy_node as Enemy)
         _kill_registered = false
         return
     current_state = Enums.BlockState.STATIC

@@ -2,7 +2,6 @@
 extends Node2D
 
 const Consts = preload("res://scripts/utils/constants.gd")
-const GameHelpers = preload("res://scripts/utils/helpers.gd")
 
 @onready var enemy: Enemy = %Enemy
 @onready var player: Player = %Player
@@ -17,6 +16,6 @@ func _ready() -> void:
 
 func _move_player_into_range() -> void:
     """Coloca al jugador junto al enemigo para forzar el cambio de estado."""
-    var approach_cell := Consts.ENEMY_START + Vector2i.LEFT
+    var approach_cell: Vector2i = Consts.ENEMY_START + Vector2i.LEFT
     player.global_position = GameHelpers.grid_to_world(approach_cell)
     player.target_position = player.global_position
