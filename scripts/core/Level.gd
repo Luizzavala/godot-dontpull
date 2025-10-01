@@ -19,6 +19,7 @@ const PowerUpScene: PackedScene = preload("res://scenes/entities/PowerUp.tscn")
 @onready var camera: Camera2D = %Camera2D
 var _current_grid_size: Vector2i = Vector2i(Consts.GRID_WIDTH, Consts.GRID_HEIGHT)
 var _level_name: String = ""
+var _current_level_file: String = ""
 
 func _ready() -> void:
     """Carga los datos del nivel y posiciona entidades según el layout."""
@@ -33,10 +34,14 @@ func _on_viewport_resized() -> void:
     _update_map_layout()
 
 func _load_level_data() -> Dictionary:
-    var path: String = level_file if level_file != "" else LevelLoader.get_default_level_path()
+    var path: String = level_file if level_file != "" else GameManager.get_queued_level_file()
+    if path == "":
+        path = LevelLoader.get_default_level_path()
+    _current_level_file = path
     var data: Dictionary = LevelLoader.load_level(path)
     if not data.is_empty():
         return data
+    _current_level_file = Consts.DEFAULT_LEVEL_FILE
     return {
         "name": name,
         "grid_size": {"width": Consts.GRID_WIDTH, "height": Consts.GRID_HEIGHT},
@@ -60,7 +65,7 @@ func _apply_level_data(data: Dictionary) -> void:
     _spawn_power_ups(_get_array(data, "power_ups"))
     hud.offset = Vector2.ZERO
     name = _level_name if _level_name != "" else name
-    GameManager.start_level(_level_name)
+    GameManager.start_level(_level_name, _current_level_file)
 
 func _update_map_layout() -> void:
     var viewport_size: Vector2 = get_viewport_rect().size
@@ -159,3 +164,7 @@ func get_level_name() -> String:
 
 func get_grid_size() -> Vector2i:
     return _current_grid_size
+
+
+func get_level_file() -> String:
+    return _current_level_file
