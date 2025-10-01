@@ -102,7 +102,7 @@ func _test_game_over_triggers_audio() -> Dictionary:
         GameManager.set_lives(previous_lives)
     return result
 
-func _override_player(event_name: String) -> MockAudioStreamPlayer:
+func _override_player(event_name: StringName) -> MockAudioStreamPlayer:
     var mock := MockAudioStreamPlayer.new()
     AudioManager.set_player_override(event_name, mock)
     return mock

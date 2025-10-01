@@ -254,11 +254,11 @@ func _refresh_high_score() -> void:
     _high_score = HighScoreService.get_high_score_value()
     high_score_changed.emit(_high_score)
 
-func _get_audio_manager() -> AudioManager:
+func _get_audio_manager() -> AudioManagerService:
     var tree := get_tree()
     if tree == null:
         return null
     var root := tree.root
     if root == null:
         return null
-    return root.get_node_or_null("AudioManager") as AudioManager
+    return root.get_node_or_null("AudioManager") as AudioManagerService

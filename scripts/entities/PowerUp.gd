@@ -49,11 +49,11 @@ func _apply_score_bonus(bonus: int) -> void:
         return
     GameManager.add_score(bonus)
 
-func _get_audio_manager() -> AudioManager:
+func _get_audio_manager() -> AudioManagerService:
     var tree := get_tree()
     if tree == null:
         return null
     var root := tree.root
     if root == null:
         return null
-    return root.get_node_or_null("AudioManager") as AudioManager
+    return root.get_node_or_null("AudioManager") as AudioManagerService

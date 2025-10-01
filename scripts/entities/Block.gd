@@ -157,11 +157,11 @@ func _play_destroy_feedback() -> void:
     _feedback_tween = create_tween()
     _feedback_tween.tween_property(self, "modulate:a", 0.0, SLIDE_TIME)
 
-func _get_audio_manager() -> AudioManager:
+func _get_audio_manager() -> AudioManagerService:
     var tree := get_tree()
     if tree == null:
         return null
     var root := tree.root
     if root == null:
         return null
-    return root.get_node_or_null("AudioManager") as AudioManager
+    return root.get_node_or_null("AudioManager") as AudioManagerService
