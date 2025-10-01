@@ -27,10 +27,11 @@
 - Definir en el Input Map las acciones `move_up`, `move_down`, `move_left`, `move_right` junto a las `ui_*` para compatibilidad y soporte multiplataforma.
 
 ## Estilo
-- Indentación: 4 espacios.  
-- Máx 100 líneas por script → dividir en managers si excede.  
-- No hardcodear valores → usar constantes o config JSON.  
-- Usar `const` y `enum` para estados.  
+- Indentación: 4 espacios.
+- Máx 100 líneas por script → dividir en managers si excede.
+- No hardcodear valores → usar constantes o config JSON.
+- Usar `const` y `enum` para estados.
+- Todas las variables deben declararse con tipo explícito para evitar `Variant` implícito.
 
 ## Tests
 - Unitarios simples en GDScript (validar colisiones, estados).  

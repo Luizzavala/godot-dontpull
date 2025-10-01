@@ -70,5 +70,12 @@ stateDiagram-v2
 ---
 
 ## HUD
-- **Elementos:** score actual, vidas, nivel  
-- **Acciones:** actualizar en tiempo real  
+- **Elementos:** score actual, vidas, nivel
+- **Acciones:** actualizar en tiempo real
+
+---
+
+## Helpers (GameHelpers)
+- **Rol:** exponer utilidades puras para conversión grid ↔ mundo y búsqueda de nodos.
+- **Acceso:** script registrado globalmente mediante `class_name GameHelpers`; no requiere `preload`.
+- **Funciones clave:** `grid_to_world`, `world_to_grid`, `find_node_at_position`, `get_tree` para obtener el `SceneTree` desde contexto estático.

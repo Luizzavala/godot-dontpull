@@ -3,7 +3,6 @@ extends Node2D
 class_name Level
 
 const Consts = preload("res://scripts/utils/constants.gd")
-const GameHelpers = preload("res://scripts/utils/helpers.gd")
 const LevelLoader = preload("res://scripts/utils/level_loader.gd")
 const EnemyScene: PackedScene = preload("res://scenes/entities/Enemy.tscn")
 const BlockScene: PackedScene = preload("res://scenes/entities/Block.tscn")
@@ -13,15 +12,15 @@ const BlockScene: PackedScene = preload("res://scenes/entities/Block.tscn")
 @onready var enemy_container: Node2D = %Enemies
 @onready var block_container: Node2D = %Blocks
 @onready var hud: HUD = %HUD
+
 func _ready() -> void:
     """Carga los datos del nivel y posiciona entidades según el layout."""
     _apply_level_data(_load_level_data())
     GameManager.start_level()
 
-
 func _load_level_data() -> Dictionary:
-    var path := level_file if level_file != "" else LevelLoader.get_default_level_path()
-    var data := LevelLoader.load_level(path)
+    var path: String = level_file if level_file != "" else LevelLoader.get_default_level_path()
+    var data: Dictionary = LevelLoader.load_level(path)
     if not data.is_empty():
         return data
     return {
@@ -32,70 +31,65 @@ func _load_level_data() -> Dictionary:
     }
 
 func _apply_level_data(data: Dictionary) -> void:
-    var grid_size := data.get("grid_size", {})
-    var width := int(grid_size.get("width", Consts.GRID_WIDTH))
-    var height := int(grid_size.get("height", Consts.GRID_HEIGHT))
+    var grid_size: Dictionary = _get_dictionary(data, "grid_size")
+    var width: int = int(grid_size.get("width", Consts.GRID_WIDTH))
+    var height: int = int(grid_size.get("height", Consts.GRID_HEIGHT))
     _populate_tile_map(width, height)
-    _position_player(data.get("player", {}))
-    _spawn_blocks(data.get("blocks", []))
-    _spawn_enemies(data.get("enemies", []))
+    _position_player(_get_dictionary(data, "player"))
+    _spawn_entities(block_container, BlockScene, _get_array(data, "blocks"), Consts.BLOCK_START)
+    _spawn_entities(enemy_container, EnemyScene, _get_array(data, "enemies"), Consts.ENEMY_START)
     hud.offset = Vector2.ZERO
 
 func _populate_tile_map(width: int, height: int) -> void:
     tile_map.clear()
-    for x in range(width):
-        for y in range(height):
+    for x: int in range(width):
+        for y: int in range(height):
             tile_map.set_cell(0, Vector2i(x, y), 0, Vector2i.ZERO)
 
 func _position_player(player_data: Dictionary) -> void:
-    var start := _extract_position(player_data.get("start", player_data), Consts.PLAYER_START)
+    var start: Vector2i = _extract_position(player_data.get("start", player_data), Consts.PLAYER_START)
     player.global_position = GameHelpers.grid_to_world(start)
     player.target_position = player.global_position
 
-func _spawn_blocks(positions: Array) -> void:
-    _clear_container(block_container)
-    if positions.is_empty():
-        _spawn_block(Consts.BLOCK_START)
-        return
-    for entry in positions:
-        _spawn_block(_extract_position(entry, Consts.BLOCK_START))
-
-func _spawn_enemies(positions: Array) -> void:
-    _clear_container(enemy_container)
-    if positions.is_empty():
-        _spawn_enemy(Consts.ENEMY_START)
-        return
-    for entry in positions:
-        _spawn_enemy(_extract_position(entry, Consts.ENEMY_START))
-
-func _spawn_block(grid_position: Vector2i) -> void:
-    var block_instance: Block = BlockScene.instantiate()
-    block_instance.global_position = GameHelpers.grid_to_world(grid_position)
-    block_container.add_child(block_instance)
-    block_instance.target_position = block_instance.global_position
-
-func _spawn_enemy(grid_position: Vector2i) -> void:
-    var enemy_instance: Enemy = EnemyScene.instantiate()
-    enemy_instance.global_position = GameHelpers.grid_to_world(grid_position)
-    enemy_container.add_child(enemy_instance)
-    enemy_instance.target_position = enemy_instance.global_position
+func _spawn_entities(container: Node2D, scene: PackedScene, entries: Array, fallback: Vector2i) -> void:
+    _clear_container(container)
+    var spawn_entries: Array = entries if not entries.is_empty() else [fallback]
+    for entry: Variant in spawn_entries:
+        var grid_position: Vector2i = _extract_position(entry, fallback)
+        var instance: Node2D = scene.instantiate() as Node2D
+        var world_position: Vector2 = GameHelpers.grid_to_world(grid_position)
+        instance.global_position = world_position
+        container.add_child(instance)
+        instance.set("target_position", world_position)
 
 func _clear_container(container: Node) -> void:
-    for child in container.get_children():
+    for child: Node in container.get_children():
         if child is Enemy:
             GameManager.unregister_enemy(child)
         child.queue_free()
 
-func _extract_position(value, fallback: Vector2i) -> Vector2i:
+func _extract_position(value: Variant, fallback: Vector2i) -> Vector2i:
     if value is Dictionary:
-        if value.has("start"):
-            return _extract_position(value["start"], fallback)
-        if value.has("position"):
-            return _extract_position(value["position"], fallback)
-    if value is Array and value.size() >= 2:
-        return Vector2i(int(value[0]), int(value[1]))
+        var value_dict: Dictionary = value
+        if value_dict.has("start"):
+            return _extract_position(value_dict["start"], fallback)
+        if value_dict.has("position"):
+            return _extract_position(value_dict["position"], fallback)
+    if value is Array:
+        var value_array: Array = value
+        if value_array.size() >= 2:
+            return Vector2i(int(value_array[0]), int(value_array[1]))
     if value is Vector2i:
         return value
     if value is Vector2:
-        return Vector2i(int(value.x), int(value.y))
+        var value_vector: Vector2 = value
+        return Vector2i(int(value_vector.x), int(value_vector.y))
     return fallback
+
+func _get_dictionary(source: Dictionary, key: String) -> Dictionary:
+    var value: Variant = source.get(key, {})
+    return value if value is Dictionary else {}
+
+func _get_array(source: Dictionary, key: String) -> Array:
+    var value: Variant = source.get(key, [])
+    return value if value is Array else []

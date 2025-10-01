@@ -3,7 +3,6 @@ class_name Player
 """Controla al jugador en grid y procesa entrada multiplataforma."""
 const Enums = preload("res://scripts/utils/enums.gd")
 const Consts = preload("res://scripts/utils/constants.gd")
-const GameHelpers = preload("res://scripts/utils/helpers.gd")
 const DEADZONE := 0.2
 const MOVE_SPEED := Consts.TILE_SIZE / Consts.PLAYER_MOVE_STEP_TIME
 
@@ -29,7 +28,7 @@ func _physics_process(_delta: float) -> void:
             velocity = Vector2.ZERO
 
 func _handle_idle_state() -> void:
-    var input_vector := _get_input_vector()
+    var input_vector: Vector2 = _get_input_vector()
     if input_vector == Vector2.ZERO:
         velocity = Vector2.ZERO
         return
@@ -38,14 +37,16 @@ func _handle_push_state() -> void:
     _advance_move(true) # Placeholder hasta implementar animación y feedback específicos.
 
 func _get_input_vector() -> Vector2:
-    var direction := _strength_vector("move_left", "move_right", "move_up", "move_down")
+    var direction: Vector2 = _strength_vector("move_left", "move_right", "move_up", "move_down")
     direction += _strength_vector("ui_left", "ui_right", "ui_up", "ui_down")
     if direction.length() < DEADZONE:
         return Vector2.ZERO
     return direction.normalized()
 
 func _strength_vector(left: StringName, right: StringName, up: StringName, down: StringName) -> Vector2:
-    return Vector2(Input.get_action_strength(right) - Input.get_action_strength(left), Input.get_action_strength(down) - Input.get_action_strength(up))
+    var horizontal: float = Input.get_action_strength(right) - Input.get_action_strength(left)
+    var vertical: float = Input.get_action_strength(down) - Input.get_action_strength(up)
+    return Vector2(horizontal, vertical)
 
 func _vector_to_cardinal(input_vector: Vector2) -> Vector2i:
     if input_vector == Vector2.ZERO:
@@ -58,10 +59,10 @@ func _vector_to_cardinal(input_vector: Vector2) -> Vector2i:
 func _try_start_move(direction: Vector2i) -> void:
     if direction == Vector2i.ZERO:
         return
-    var destination := target_position + Vector2(direction) * Consts.TILE_SIZE
-    var block := GameHelpers.find_node_at_position("blocks", destination)
-    if block and block is Block:
-        if (block as Block).request_slide(direction):
+    var destination: Vector2 = target_position + Vector2(direction) * Consts.TILE_SIZE
+    var block_node: Node = GameHelpers.find_node_at_position("blocks", destination)
+    if block_node and block_node is Block:
+        if (block_node as Block).request_slide(direction):
             state = Enums.PlayerState.PUSH
             _begin_move(destination, direction)
         return

@@ -4,24 +4,32 @@ class_name GameHelpers
 
 const Consts = preload("res://scripts/utils/constants.gd")
 
+
 static func grid_to_world(grid_position: Vector2i) -> Vector2:
     """Convierte una posición de grid a coordenadas globales."""
-    return Vector2(grid_position) * Consts.TILE_SIZE + Vector2.ONE * (Consts.TILE_SIZE * 0.5)
+    var tile_size: float = Consts.TILE_SIZE
+    var half_tile: Vector2 = Vector2.ONE * (tile_size * 0.5)
+    var grid_position_vector: Vector2 = Vector2(grid_position)
+    return grid_position_vector * tile_size + half_tile
 
 
 static func world_to_grid(world_position: Vector2) -> Vector2i:
     """Convierte una posición global a coordenadas del grid."""
-    var adjusted := world_position - Vector2.ONE * (Consts.TILE_SIZE * 0.5)
-    return Vector2i(round(adjusted.x / Consts.TILE_SIZE), round(adjusted.y / Consts.TILE_SIZE))
+    var tile_size: float = Consts.TILE_SIZE
+    var half_tile: Vector2 = Vector2.ONE * (tile_size * 0.5)
+    var adjusted: Vector2 = world_position - half_tile
+    return Vector2i(round(adjusted.x / tile_size), round(adjusted.y / tile_size))
 
 
 static func find_node_at_position(group_name: StringName, world_position: Vector2) -> Node:
     """Devuelve el primer nodo del grupo indicado que coincida con la posición global proporcionada."""
-    for node in get_tree().get_nodes_in_group(group_name):
+    var nodes_in_group: Array = get_tree().get_nodes_in_group(group_name)
+    for node: Node in nodes_in_group:
         if not node is Node2D:
             continue
-        if (node as Node2D).global_position.distance_to(world_position) < 1.0:
-            return node
+        var node_2d: Node2D = node as Node2D
+        if node_2d.global_position.distance_to(world_position) < 1.0:
+            return node_2d
     return null
 
 
