@@ -1,15 +1,15 @@
 ## AudioManager centraliza la reproducción de música y efectos de sonido.
 extends Node
-class_name AudioManager
+class_name AudioManagerService
 
-const EVENT_BGM := "bgm"
-const EVENT_BLOCK_LAUNCH := "block_launch"
-const EVENT_BLOCK_DESTROY := "block_destroy"
-const EVENT_ENEMY_CRUSH := "enemy_crush"
-const EVENT_POWER_UP := "power_up"
-const EVENT_GAME_OVER := "game_over"
+const EVENT_BGM := StringName("bgm")
+const EVENT_BLOCK_LAUNCH := StringName("block_launch")
+const EVENT_BLOCK_DESTROY := StringName("block_destroy")
+const EVENT_ENEMY_CRUSH := StringName("enemy_crush")
+const EVENT_POWER_UP := StringName("power_up")
+const EVENT_GAME_OVER := StringName("game_over")
 
-var _players: Dictionary = {}
+var _players: Dictionary[StringName, AudioStreamPlayer] = {}
 
 func _ready() -> void:
     """Crea los nodos de audio necesarios para los distintos eventos."""
@@ -59,7 +59,7 @@ func play_game_over() -> void:
     _ensure_players_ready()
     _restart_player(EVENT_GAME_OVER)
 
-func set_player_override(event_name: String, player: AudioStreamPlayer) -> void:
+func set_player_override(event_name: StringName, player: AudioStreamPlayer) -> void:
     """Permite sustituir un reproductor para pruebas o configuraciones especiales."""
     _ensure_players_ready()
     if not _players.has(event_name):
@@ -67,17 +67,17 @@ func set_player_override(event_name: String, player: AudioStreamPlayer) -> void:
     var current: AudioStreamPlayer = _players[event_name]
     if is_instance_valid(current):
         current.queue_free()
-    var target_name := current.name if current else StringName(event_name + "_player")
+    var target_name := current.name if current else StringName(String(event_name) + "_player")
     player.name = target_name
     add_child(player)
     _players[event_name] = player
 
-func get_player(event_name: String) -> AudioStreamPlayer:
+func get_player(event_name: StringName) -> AudioStreamPlayer:
     """Devuelve el reproductor asociado a un evento."""
     _ensure_players_ready()
     return _players.get(event_name, null)
 
-func _restart_player(event_name: String) -> void:
+func _restart_player(event_name: StringName) -> void:
     var player: AudioStreamPlayer = _players.get(event_name, null)
     if player == null:
         return
