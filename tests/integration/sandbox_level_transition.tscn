@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/core/Level.tscn" id="1"]
+[ext_resource type="Script" path="res://tests/integration/sandbox_level_transition.gd" id="2"]
+
+[node name="LevelTransitionSandbox" type="Node2D"]
+script = ExtResource("2")
+
+[node name="Level" parent="." instance=ExtResource("1")]
+unique_name_in_owner = true
+level_file = "level_transition_sandbox.json"

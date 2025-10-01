@@ -8,6 +8,7 @@ class GameManagerStub:
     signal score_changed(new_score: int)
     signal lives_changed(new_lives: int)
     signal level_started(level_name: String)
+    signal level_cleared(level_name: String)
     signal game_over()
     var registered_hud: HUD
 

@@ -20,6 +20,12 @@ const LEVEL_SCENE_PATH := "res://scenes/core/Level.tscn"
 const MAIN_MENU_SCENE_PATH := "res://scenes/core/MainMenu.tscn"
 const LEVELS_DIR := "res://levels/"
 const DEFAULT_LEVEL_FILE := "level_01.json"
+const LEVEL_SEQUENCE := [
+    "level_01.json",
+    "level_02.json",
+    "level_03.json",
+]
+const LEVEL_TRANSITION_DELAY := 1.5
 const POWER_UP_DEFAULT_SCORE := 50
 const POWER_UP_SCORES := {
     "fruit": 100,
