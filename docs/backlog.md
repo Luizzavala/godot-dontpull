@@ -326,3 +326,13 @@ El objetivo es que el área de juego:
   - /tests/integration/sandbox_highscore_json.tscn → validar que el servicio carga high scores desde archivo válido e ignora inválidos.
 
 ---
+
+## Corrección de conflicto de AudioManager (autoload vs class_name) y variables mal tipadas
+
+### Problema 1: Conflicto con AudioManager
+Actualmente el script `AudioManager.gd` declara:
+```gdscript
+class_name AudioManager
+extends Node
+
+---

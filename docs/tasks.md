@@ -21,6 +21,7 @@
 - [x] Sistema de puntuación arcade y tabla de récords (High Score)
 - [x] Corrección de parseo JSON en HighScoreService
 - [x] Hooks de música y efectos de sonido (dummy)
+- [ ] Corrección de conflicto de AudioManager (autoload vs class_name) y variables mal tipadas
 - [ ] Animaciones retro (dummy)
 - [ ] Pantalla de introducción / attract mode
 - [ ] Balance y dificultad progresiva
