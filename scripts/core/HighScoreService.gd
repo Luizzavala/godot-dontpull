@@ -92,18 +92,26 @@ static func _load_scores_from_disk() -> void:
     if file == null:
         return
     var content := file.get_as_text()
-    var data := JSON.parse_string(content)
-    if data == null:
+    var json := JSON.new()
+    var parse_error := json.parse(content)
+    if parse_error != OK:
         return
-    if data is Array:
-        for element in data:
-            if element is Dictionary and element.has("score"):
-                var entry := {
-                    "initials": _sanitize_initials(String(element.get("initials", "AAA"))),
-                    "score": int(element.get("score", 0)),
-                    "timestamp": int(element.get("timestamp", 0)),
-                }
-                _scores.append(entry)
+    var data_variant := json.get_data()
+    if not (data_variant is Array):
+        return
+    var data: Array = data_variant
+    for element_variant in data:
+        if not (element_variant is Dictionary):
+            continue
+        var element: Dictionary = element_variant
+        if not element.has("score"):
+            continue
+        var entry := {
+            "initials": _sanitize_initials(String(element.get("initials", "AAA"))),
+            "score": int(element.get("score", 0)),
+            "timestamp": int(element.get("timestamp", 0)),
+        }
+        _scores.append(entry)
     _sort_scores()
 
 
