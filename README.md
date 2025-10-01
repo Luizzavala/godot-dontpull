@@ -31,6 +31,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 - [x] Ajuste de resolución, escalado y centrado del área jugable
 - [x] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
 - [x] Sistema de puntuación arcade y tabla de récords (High Score)
+- [ ] Corrección de parseo JSON en HighScoreService
 - [ ] Hooks de música y efectos de sonido (dummy)
 - [ ] Animaciones retro (dummy)
 - [ ] Pantalla de introducción / attract mode

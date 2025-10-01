@@ -315,3 +315,14 @@ El objetivo es que el área de juego:
   - /tests/integration/sandbox_export.tscn → validar input y fullscreen en exportación.
 
 ---
+
+## Corrección de parseo JSON en HighScoreService
+- Sustituir `JSON.parse_string(content)` por `JSON.new().parse(content)`.
+- Usar `get_data()` y tipar explícitamente `data: Array` (la lista de high scores).
+- Manejo robusto de errores de parseo (`if error == OK`).
+- Estándar del proyecto: todo JSON debe parsearse con `JSON.new().parse()` y tiparse en Array o Dictionary según corresponda.
+- Tests:
+  - /tests/unit/test_highscore_json.gd → validar que los datos se cargan sin errores de tipado.
+  - /tests/integration/sandbox_highscore_json.tscn → validar que el servicio carga high scores desde archivo válido e ignora inválidos.
+
+---
