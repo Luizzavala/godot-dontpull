@@ -96,7 +96,7 @@ static func _load_scores_from_disk() -> void:
     var parse_error := json.parse(content)
     if parse_error != OK:
         return
-    var data_variant := json.get_data()
+    var data_variant: Array = json.get_data()
     if not (data_variant is Array):
         return
     var data: Array = data_variant
