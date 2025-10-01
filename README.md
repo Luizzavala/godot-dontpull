@@ -26,6 +26,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
   - [x] Level en la **esquina superior izquierda**.
   - [x] Timer en el **centro superior** (contando tiempo de cada nivel).
 - [x] Mapas centrados y área de no tránsito diferenciada.
+- [ ] Implementación de niveles originales de Don’t Pull (Capcom)
 - [ ] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
 - [ ] Sistema de Game Over y reinicio
 - [ ] Menú principal funcional

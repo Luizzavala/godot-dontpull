@@ -112,3 +112,27 @@
 ## Migraciones
 
 - NOTIFICATION_RESIZED (Godot 3.x) → reemplazado por signal `size_changed` en Godot 4.x.
+
+## Implementación de niveles originales de Don’t Pull (Capcom)
+
+- Los niveles deben reflejar el diseño del arcade original:
+  - Dimensiones más grandes que el prototipo actual (ej. grid 13×11 o 15×13, ajustable según cada nivel).
+  - Posicionamiento de bloques formando laberintos o caminos estrechos.
+  - Inclusión de enemigos y power-ups en posiciones predeterminadas.
+- Mostrar en el HUD el nombre del nivel (ejemplo: “Orchard-01”).
+- Extender el formato JSON de niveles:
+  - `"name"`: nombre del nivel (visible en HUD).
+  - `"grid_size"`: dimensiones exactas del nivel.
+  - `"blocks"`: lista de coordenadas para el layout del laberinto.
+  - `"player"` y `"enemies"`: posiciones iniciales.
+  - `"power_ups"`: ítems con tipo y posición.
+- Nuevas mecánicas de bloques:
+  - **Lanzamiento:** el jugador puede empujar un bloque hasta que recorra toda la línea o choque con otro bloque, pared o enemigo.
+  - **Destrucción:** implementar acción para destruir un bloque (ej. tras empuje especial o power-up).
+  - Animaciones asociadas (empuje, ruptura).
+- Tests:
+  - /tests/unit/test_level_loader.gd → validar carga correcta de laberintos desde JSON.
+  - /tests/unit/test_block_launch.gd → validar que los bloques lanzados se mueven hasta chocar con algo.
+  - /tests/unit/test_block_destroy.gd → validar destrucción de bloques.
+  - /tests/integration/sandbox_labyrinth.tscn → probar un nivel con laberinto cargado.
+
