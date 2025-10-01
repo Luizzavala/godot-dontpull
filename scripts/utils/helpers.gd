@@ -28,6 +28,9 @@ static func find_node_at_position(group_name: StringName, world_position: Vector
         if not node is Node2D:
             continue
         var node_2d: Node2D = node as Node2D
+        if node_2d.has_method("occupies_world_position"):
+            if node_2d.occupies_world_position(world_position):
+                return node_2d
         if node_2d.global_position.distance_to(world_position) < 1.0:
             return node_2d
     return null
