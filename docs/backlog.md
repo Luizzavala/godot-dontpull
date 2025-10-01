@@ -242,3 +242,76 @@ El objetivo es que el área de juego:
 - /tests/integration/sandbox_scaling.tscn → cargar varios niveles con distintos grid_size y comprobar visualmente que ocupan un área proporcional de la pantalla, siempre centrados.
 
 ---
+
+## Sistema de puntuación arcade y tabla de récords (High Score)
+- Implementar un sistema de high scores persistente:
+  - Guardar score máximo entre partidas (ej. en user://scores.json).
+  - Tabla de 5–10 mejores puntuaciones.
+  - Permitir ingresar iniciales al terminar una partida (3 letras estilo arcade).
+- Mostrar la high score en HUD y en menú principal.
+- Tests:
+  - /tests/unit/test_high_score.gd → validar que las puntuaciones se guardan/ordenan correctamente.
+  - /tests/integration/sandbox_high_score.tscn → escenario de prueba de tabla de récords.
+
+---
+
+## Hooks de música y efectos de sonido (dummy)
+- Añadir nodos `AudioStreamPlayer` para:
+  - BGM (loop).
+  - Empuje/lanzamiento de bloque.
+  - Destrucción de bloque.
+  - Aplastamiento de enemigo.
+  - Recolección de power-up.
+  - Game Over.
+- Los streams se inicializan como `null` (o con placeholders vacíos) hasta integrar audios binarios.
+- Tests:
+  - /tests/unit/test_audio_hooks.gd → validar que cada acción dispara el `play()` correspondiente.
+  - /tests/integration/sandbox_audio_hooks.tscn → comprobar que los players se invocan.
+
+---
+
+## Animaciones retro (dummy)
+- Configurar nodos `AnimatedSprite2D` o `AnimationPlayer`:
+  - Jugador (idle, walk, push, dead).
+  - Enemigos (idle, move, dead).
+  - Bloques (sliding, destroyed).
+- Las animaciones pueden usar frames de placeholder (ej. un cuadrado de colores distintos).
+- FSM debe cambiar de animación al cambiar de estado.
+- Tests:
+  - /tests/unit/test_animation_state_machine.gd → validar que el cambio de estado dispara la animación correcta.
+  - /tests/integration/sandbox_animation_hooks.tscn → probar animaciones dummy.
+
+---
+
+## Pantalla de introducción / attract mode
+- Crear escena de introducción tipo arcade:
+  - Logo + créditos (dummy).
+  - Demo automática (IA controlando jugador en un nivel).
+  - Loop hasta que el jugador presione Start.
+- Tests:
+  - /tests/unit/test_attract_cycle.gd → validar loop y transición al menú.
+  - /tests/integration/sandbox_attract.tscn → demo básica.
+
+---
+
+## Balance y dificultad progresiva
+- Incrementar dificultad gradualmente:
+  - Velocidad de enemigos aumenta por nivel.
+  - Tiempo disponible por nivel disminuye.
+  - Niveles más avanzados con layouts más cerrados.
+- Constantes de dificultad en Consts.gd.
+- Tests:
+  - /tests/unit/test_difficulty_curve.gd → validar incremento progresivo de parámetros.
+  - /tests/integration/sandbox_difficulty.tscn → partida de varios niveles en secuencia.
+
+---
+
+## Export estilo arcade
+- Configurar el proyecto para exportar builds con:
+  - Resolución fija (ej. 640×480, fullscreen).
+  - Input configurable (teclado, gamepad, arcade stick).
+  - Sin UI extra de depuración.
+- Tests:
+  - /tests/integration/sandbox_export.tscn → validar input y fullscreen en exportación.
+
+---
