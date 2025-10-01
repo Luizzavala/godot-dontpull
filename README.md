@@ -25,7 +25,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
   - [x] Vidas en el **centro inferior**.
   - [x] Level en la **esquina superior izquierda**.
   - [x] Timer en el **centro superior** (contando tiempo de cada nivel).
-- [ ] Mapas centrados y área de no tránsito diferenciada.
+- [x] Mapas centrados y área de no tránsito diferenciada.
 - [ ] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
 - [ ] Sistema de Game Over y reinicio
 - [ ] Menú principal funcional
