@@ -73,6 +73,9 @@ func _advance(delta: float) -> void:
 func _attempt_step(direction: Vector2i) -> bool:
     """Calcula un destino potencial y valida colisiones básicas."""
     var destination: Vector2 = target_position + Vector2(direction) * Consts.TILE_SIZE
+    var destination_grid: Vector2i = GameHelpers.world_to_grid(destination)
+    if not GameHelpers.is_within_bounds(destination_grid):
+        return false
     if GameHelpers.find_node_at_position("blocks", destination):
         return false
     target_position = destination

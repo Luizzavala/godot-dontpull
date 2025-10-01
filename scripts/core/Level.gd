@@ -36,6 +36,7 @@ func _apply_level_data(data: Dictionary) -> void:
     var grid_size: Dictionary = _get_dictionary(data, "grid_size")
     var width: int = int(grid_size.get("width", Consts.GRID_WIDTH))
     var height: int = int(grid_size.get("height", Consts.GRID_HEIGHT))
+    GameHelpers.set_map_bounds(Rect2i(Vector2i.ZERO, Vector2i(width, height)))
     _populate_tile_map(width, height)
     _position_player(_get_dictionary(data, "player"))
     _spawn_entities(block_container, BlockScene, _get_array(data, "blocks"), Consts.BLOCK_START)

@@ -4,6 +4,7 @@ class_name GameHelpers
 
 const Consts = preload("res://scripts/utils/constants.gd")
 
+static var _map_bounds: Rect2i = Rect2i(Vector2i.ZERO, Vector2i(Consts.GRID_WIDTH, Consts.GRID_HEIGHT))
 
 static func grid_to_world(grid_position: Vector2i) -> Vector2:
     """Convierte una posición de grid a coordenadas globales."""
@@ -39,3 +40,18 @@ static func find_node_at_position(group_name: StringName, world_position: Vector
 static func get_tree() -> SceneTree:
     """Permite acceder al árbol de escenas desde un contexto estático."""
     return Engine.get_main_loop() as SceneTree
+
+
+static func set_map_bounds(bounds: Rect2i) -> void:
+    """Define los límites actuales del grid disponible para el nivel."""
+    _map_bounds = bounds
+
+
+static func get_map_bounds() -> Rect2i:
+    """Devuelve el rectángulo de límites configurado para el mapa."""
+    return _map_bounds
+
+
+static func is_within_bounds(grid_position: Vector2i) -> bool:
+    """Indica si la posición en grid se encuentra dentro de los límites actuales."""
+    return _map_bounds.has_point(grid_position)
