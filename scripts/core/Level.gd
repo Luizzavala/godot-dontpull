@@ -21,11 +21,15 @@ var _current_grid_size: Vector2i = Vector2i(Consts.GRID_WIDTH, Consts.GRID_HEIGH
 func _ready() -> void:
     """Carga los datos del nivel y posiciona entidades según el layout."""
     _apply_level_data(_load_level_data())
+    var viewport: Viewport = get_viewport()
+    if viewport != null:
+        viewport.connect("size_changed", Callable(self, "_on_viewport_resized"))
+    _update_map_layout()
     GameManager.start_level()
 
-func _notification(what: int) -> void:
-    if what == NOTIFICATION_RESIZED:
-        _update_map_layout()
+func _on_viewport_resized() -> void:
+    """Actualiza el layout del mapa cuando cambia el tamaño del viewport."""
+    _update_map_layout()
 
 func _load_level_data() -> Dictionary:
     var path: String = level_file if level_file != "" else LevelLoader.get_default_level_path()
