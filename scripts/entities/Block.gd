@@ -4,6 +4,7 @@ class_name Block
 
 const Enums = preload("res://scripts/utils/enums.gd")
 const Consts = preload("res://scripts/utils/constants.gd")
+const GameHelpers = preload("res://scripts/utils/helpers.gd")
 const SLIDE_TIME := Consts.BLOCK_SLIDE_TIME
 const SLIDE_SPEED := Consts.TILE_SIZE / SLIDE_TIME
 const BLOCK_KILL_SCORE := Consts.BLOCK_KILL_SCORE
@@ -11,7 +12,9 @@ const BLOCK_KILL_SCORE := Consts.BLOCK_KILL_SCORE
 var current_state: Enums.BlockState = Enums.BlockState.STATIC
 var target_position: Vector2
 var _slide_origin: Vector2 = Vector2.ZERO
+var _launch_direction: Vector2i = Vector2i.ZERO
 var _kill_registered: bool = false
+var _feedback_tween: Tween
 
 
 func _ready() -> void:
@@ -32,19 +35,31 @@ func _physics_process(delta: float) -> void:
 
 
 func request_slide(direction: Vector2i) -> bool:
-    """Inicia el deslizamiento del bloque si la casilla destino está libre."""
+    """Inicia el lanzamiento del bloque recorriendo la línea hasta encontrar un obstáculo."""
     if current_state != Enums.BlockState.STATIC:
         return false
-    var destination: Vector2 = target_position + Vector2(direction) * Consts.TILE_SIZE
-    var destination_grid: Vector2i = GameHelpers.world_to_grid(destination)
-    if not GameHelpers.is_within_bounds(destination_grid):
+    if direction == Vector2i.ZERO:
         return false
-    if GameHelpers.find_node_at_position("blocks", destination):
+    var current_grid: Vector2i = GameHelpers.world_to_grid(target_position)
+    var final_destination: Vector2 = target_position
+    var step_grid: Vector2i = current_grid + direction
+    while GameHelpers.is_within_bounds(step_grid):
+        var step_world: Vector2 = GameHelpers.grid_to_world(step_grid)
+        if GameHelpers.find_node_at_position("blocks", step_world):
+            break
+        var enemy_node: Node = GameHelpers.find_node_at_position("enemies", step_world)
+        final_destination = step_world
+        if enemy_node:
+            break
+        step_grid += direction
+    if final_destination.is_equal_approx(target_position):
         return false
     _kill_registered = false
     _slide_origin = target_position
-    target_position = destination
+    target_position = final_destination
+    _launch_direction = direction
     current_state = Enums.BlockState.SLIDING
+    _play_launch_feedback()
     return true
 
 
@@ -58,7 +73,11 @@ func _process_sliding(delta: float) -> void:
 
 func destroy_block() -> void:
     """Marca el bloque como destruido para que sea eliminado del nivel."""
+    if current_state == Enums.BlockState.DESTROYED:
+        return
     current_state = Enums.BlockState.DESTROYED
+    _play_destroy_feedback()
+    queue_free()
 
 
 func _on_body_entered(body: Node) -> void:
@@ -93,6 +112,9 @@ func _finalize_slide() -> void:
         return
     current_state = Enums.BlockState.STATIC
     _slide_origin = target_position
+    _launch_direction = Vector2i.ZERO
+    scale = Vector2.ONE
+    modulate.a = 1.0
 
 
 func occupies_world_position(world_position: Vector2) -> bool:
@@ -103,4 +125,28 @@ func occupies_world_position(world_position: Vector2) -> bool:
             return true
         if _slide_origin.distance_to(world_position) < tolerance:
             return true
+        if _launch_direction != Vector2i.ZERO:
+            var current_grid: Vector2i = GameHelpers.world_to_grid(_slide_origin)
+            var end_grid: Vector2i = GameHelpers.world_to_grid(target_position)
+            var check_grid: Vector2i = current_grid
+            while check_grid != end_grid:
+                check_grid += _launch_direction
+                if GameHelpers.grid_to_world(check_grid).distance_to(world_position) < tolerance:
+                    return true
     return target_position.distance_to(world_position) < tolerance
+
+
+func _play_launch_feedback() -> void:
+    if is_instance_valid(_feedback_tween):
+        _feedback_tween.kill()
+    scale = Vector2.ONE
+    _feedback_tween = create_tween()
+    _feedback_tween.tween_property(self, "scale", Vector2.ONE * 1.1, SLIDE_TIME * 0.5)
+    _feedback_tween.tween_property(self, "scale", Vector2.ONE, SLIDE_TIME * 0.5)
+
+
+func _play_destroy_feedback() -> void:
+    if is_instance_valid(_feedback_tween):
+        _feedback_tween.kill()
+    _feedback_tween = create_tween()
+    _feedback_tween.tween_property(self, "modulate:a", 0.0, SLIDE_TIME)

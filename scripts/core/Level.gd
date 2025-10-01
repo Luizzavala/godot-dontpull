@@ -17,6 +17,7 @@ const PowerUpScene: PackedScene = preload("res://scenes/entities/PowerUp.tscn")
 @onready var non_playable_background: ColorRect = %NonPlayableBackground
 @onready var playable_area_rect: ColorRect = %PlayableArea
 var _current_grid_size: Vector2i = Vector2i(Consts.GRID_WIDTH, Consts.GRID_HEIGHT)
+var _level_name: String = ""
 
 func _ready() -> void:
     """Carga los datos del nivel y posiciona entidades según el layout."""
@@ -25,7 +26,6 @@ func _ready() -> void:
     if viewport != null:
         viewport.connect("size_changed", Callable(self, "_on_viewport_resized"))
     _update_map_layout()
-    GameManager.start_level()
 
 func _on_viewport_resized() -> void:
     """Actualiza el layout del mapa cuando cambia el tamaño del viewport."""
@@ -37,6 +37,7 @@ func _load_level_data() -> Dictionary:
     if not data.is_empty():
         return data
     return {
+        "name": name,
         "grid_size": {"width": Consts.GRID_WIDTH, "height": Consts.GRID_HEIGHT},
         "player": {"start": Consts.PLAYER_START},
         "blocks": [Consts.BLOCK_START],
@@ -44,6 +45,7 @@ func _load_level_data() -> Dictionary:
     }
 
 func _apply_level_data(data: Dictionary) -> void:
+    _level_name = String(data.get("name", name))
     var grid_size: Dictionary = _get_dictionary(data, "grid_size")
     var width: int = int(grid_size.get("width", Consts.GRID_WIDTH))
     var height: int = int(grid_size.get("height", Consts.GRID_HEIGHT))
@@ -56,6 +58,8 @@ func _apply_level_data(data: Dictionary) -> void:
     _spawn_entities(enemy_container, EnemyScene, _get_array(data, "enemies"), Consts.ENEMY_START)
     _spawn_power_ups(_get_array(data, "power_ups"))
     hud.offset = Vector2.ZERO
+    name = _level_name if _level_name != "" else name
+    GameManager.start_level(_level_name)
 
 func _update_map_layout() -> void:
     var viewport_size: Vector2 = get_viewport_rect().size
@@ -138,3 +142,7 @@ func _get_dictionary(source: Dictionary, key: String) -> Dictionary:
 func _get_array(source: Dictionary, key: String) -> Array:
     var value: Variant = source.get(key, [])
     return value if value is Array else []
+
+
+func get_level_name() -> String:
+    return _level_name

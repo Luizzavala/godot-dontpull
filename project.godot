@@ -95,6 +95,22 @@ move_right={
 "unicode": 0
 }]
 }
+block_destroy={
+"deadzone": 0.5,
+"events": [{
+"echo": false,
+"keycode": 74,
+"physical_keycode": 74,
+"type": "key",
+"unicode": 106
+}, {
+"echo": false,
+"keycode": 32,
+"physical_keycode": 32,
+"type": "key",
+"unicode": 32
+}]
+}
 
 [physics]
 

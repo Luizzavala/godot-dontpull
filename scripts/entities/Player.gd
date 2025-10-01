@@ -3,12 +3,14 @@ class_name Player
 """Controla al jugador en grid y procesa entrada multiplataforma."""
 const Enums = preload("res://scripts/utils/enums.gd")
 const Consts = preload("res://scripts/utils/constants.gd")
+const GameHelpers = preload("res://scripts/utils/helpers.gd")
 const DEADZONE := 0.2
 const MOVE_SPEED := Consts.TILE_SIZE / Consts.PLAYER_MOVE_STEP_TIME
 
 var state: Enums.PlayerState = Enums.PlayerState.IDLE
 var target_position: Vector2 = Vector2.ZERO
 var move_direction: Vector2 = Vector2.ZERO
+var facing_direction: Vector2i = Vector2i.RIGHT
 func _ready() -> void:
     """Configura el jugador al entrar en la escena."""
     target_position = global_position
@@ -28,11 +30,18 @@ func _physics_process(_delta: float) -> void:
             velocity = Vector2.ZERO
 
 func _handle_idle_state() -> void:
+    var destroy_requested := Input.is_action_just_pressed("block_destroy")
     var input_vector: Vector2 = _get_input_vector()
-    if input_vector == Vector2.ZERO:
-        velocity = Vector2.ZERO
-        return
-    _try_start_move(_vector_to_cardinal(input_vector))
+    if input_vector != Vector2.ZERO:
+        var cardinal := _vector_to_cardinal(input_vector)
+        if cardinal != Vector2i.ZERO:
+            facing_direction = cardinal
+            _try_start_move(cardinal)
+            return
+    velocity = Vector2.ZERO
+    if destroy_requested:
+        _try_destroy_block()
+
 func _handle_push_state() -> void:
     _advance_move(true) # Placeholder hasta implementar animación y feedback específicos.
 
@@ -78,6 +87,7 @@ func _try_start_move(direction: Vector2i) -> void:
 func _begin_move(destination: Vector2, direction: Vector2i) -> void:
     target_position = destination
     move_direction = Vector2(direction)
+    facing_direction = direction
 
 func _advance_move(is_push: bool = false) -> void:
     if move_direction == Vector2.ZERO:
@@ -101,3 +111,13 @@ func _set_dead_state() -> void:
     """Activa el estado de muerte y notifica al GameManager."""
     state = Enums.PlayerState.DEAD
     GameManager.on_player_defeated()
+
+
+func _try_destroy_block() -> void:
+    var direction := facing_direction
+    if direction == Vector2i.ZERO:
+        return
+    var front_world: Vector2 = target_position + Vector2(direction) * Consts.TILE_SIZE
+    var block_node: Node = GameHelpers.find_node_at_position("blocks", front_world)
+    if block_node and block_node is Block:
+        (block_node as Block).destroy_block()

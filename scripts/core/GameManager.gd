@@ -10,6 +10,7 @@ var _player: Player
 var _score := 0
 var _lives := Consts.START_LIVES
 var _enemies: Array[Enemy] = []
+var _current_level_name: String = ""
 func _ready() -> void:
     """Emite el estado inicial al arrancar el autoload."""
     get_tree().scene_changed.connect(_on_scene_changed)
@@ -37,10 +38,16 @@ func set_lives(value: int) -> void:
     if _lives <= 0:
         game_over.emit()
 
-func start_level() -> void:
+func start_level(level_name: String = "") -> void:
     """Propaga el inicio del nivel actual al HUD."""
-    var current_scene := get_tree().current_scene
-    level_started.emit(current_scene.name if current_scene else "")
+    var resolved_name := level_name.strip_edges()
+    if resolved_name == "":
+        return
+    if resolved_name == _current_level_name:
+        level_started.emit(resolved_name)
+        return
+    _current_level_name = resolved_name
+    level_started.emit(_current_level_name)
 
 func register_enemy(enemy: Enemy) -> void:
     """Añade enemigos activos para referencia rápida."""
@@ -73,6 +80,7 @@ func return_to_menu() -> void:
     """Regresa al menú principal y restablece score y vidas."""
     _score = 0
     _lives = Consts.START_LIVES
+    _current_level_name = ""
     score_changed.emit(_score)
     lives_changed.emit(_lives)
     get_tree().change_scene_to_file(Consts.MAIN_MENU_SCENE_PATH)
@@ -88,4 +96,7 @@ func notify_player_step() -> void:
 func _on_scene_changed(new_scene: Node) -> void:
     """Detecta cambios de escena para iniciar niveles automáticamente."""
     if new_scene and new_scene.scene_file_path == Consts.LEVEL_SCENE_PATH:
-        start_level()
+        var level_name := ""
+        if new_scene.has_method("get_level_name"):
+            level_name = String(new_scene.call("get_level_name"))
+        start_level(level_name)
