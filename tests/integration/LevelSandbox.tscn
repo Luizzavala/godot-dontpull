@@ -1,7 +1,8 @@
 [gd_scene load_steps=2 format=3]
 
-[ext_resource type="PackedScene" path="res://scenes/Level.tscn" id="1"]
+[ext_resource type="PackedScene" path="res://scenes/core/Level.tscn" id="1"]
 
 [node name="LevelSandbox" type="Node"]
 
 [node name="Level" parent="LevelSandbox" instance=ExtResource("1")]
+level_file = "res://levels/level_01.json"

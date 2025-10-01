@@ -61,10 +61,11 @@ stateDiagram-v2
 ---
 
 ## Sistema de Juego (GameManager)
-- Cargar nivel  
-- Spawnear enemigos  
-- Controlar condiciones de victoria/derrota  
-- Gestionar score global y vidas  
+- Cargar nivel
+- Spawnear enemigos
+- Controlar condiciones de victoria/derrota
+- Registrar y desregistrar enemigos activos según el layout
+- Gestionar score global y vidas
 
 ---
 

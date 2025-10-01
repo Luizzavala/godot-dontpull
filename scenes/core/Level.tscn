@@ -39,10 +39,16 @@ tile_set = SubResource("4")
 [node name="Player" parent="." instance=ExtResource("2")]
 unique_name_in_owner = true
 
-[node name="Enemy" parent="." instance=ExtResource("3")]
+[node name="Enemies" type="Node2D" parent="."]
 unique_name_in_owner = true
 
-[node name="Block" parent="." instance=ExtResource("4")]
+[node name="Enemy" parent="Enemies" instance=ExtResource("3")]
+unique_name_in_owner = true
+
+[node name="Blocks" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Block" parent="Blocks" instance=ExtResource("4")]
 unique_name_in_owner = true
 
 [node name="HUD" parent="." instance=ExtResource("5")]

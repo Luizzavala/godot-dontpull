@@ -1,0 +1,13 @@
+{
+    "name": "Orchard-01",
+    "grid_size": {"width": 7, "height": 7},
+    "player": {"start": [1, 3]},
+    "blocks": [
+        [2, 3],
+        [4, 3]
+    ],
+    "enemies": [
+        {"type": "random", "start": [5, 3]},
+        {"type": "chaser", "start": [3, 5]}
+    ]
+}
