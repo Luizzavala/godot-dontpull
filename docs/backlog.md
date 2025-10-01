@@ -92,3 +92,17 @@
 - Tests:
   - /tests/unit/test_balance_values.gd → validar constantes dentro de rango esperado.
   - /tests/integration/sandbox_full_game.tscn → simulación completa.
+
+## Mapas centrados y área de no tránsito diferenciada
+
+- Los mapas actuales (ejemplo Orchard-01) son más pequeños que los originales de *Don’t Pull*.
+- El área de juego debe quedar **centrada en pantalla**, no alineada a la izquierda.
+- El espacio fuera del área jugable (área de no tránsito) debe renderizarse con un **color distinto** al fondo, para marcar claramente los límites.
+- Requisitos técnicos:
+  - El `TileMap` debe calcular un offset inicial para centrar el grid dentro del viewport (usar Consts.GRID_WIDTH y Consts.GRID_HEIGHT).
+  - Crear un `ColorRect` o capa de fondo diferenciada para la zona no transitable.
+  - Asegurar que jugador, bloques y enemigos **solo se muevan dentro del área jugable**.
+- Tests:
+  - /tests/unit/test_map_centering.gd → validar que el offset del mapa centra el grid en pantalla.
+  - /tests/unit/test_out_of_bounds.gd → validar que jugador/bloques no pueden moverse fuera del área jugable.
+  - /tests/integration/sandbox_centered_map.tscn → cargar un nivel pequeño y comprobar que aparece centrado con fondo diferenciado.
