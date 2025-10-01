@@ -15,7 +15,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 - [x] IA básica de enemigos
 - [x] HUD y sistema de score
 - [x] Niveles iniciales
-- [ ] Colisión de bloques con enemigos (enemigos aplastados)
+- [x] Colisión de bloques con enemigos (enemigos aplastados)
 - [ ] Power-ups y sistema de bonus (frutas/ítems)
 - [x] Niveles iniciales (carga desde JSON en /levels)
 - [ ] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)

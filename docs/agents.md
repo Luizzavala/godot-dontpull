@@ -42,14 +42,14 @@ stateDiagram-v2
 - Velocidad  
 - IA pattern  
 
-**Acciones:** patrullar, perseguir, colisionar con jugador.  
+**Acciones:** patrullar, perseguir, colisionar con jugador, morir aplastado por bloque (entrega score base + bonus).
 
 ---
 
 ## Bloques (Block)
-- **Estados:** Static → Sliding → Destroyed  
-- **Atributos:** posición en grid, desplazamiento (en tiles)  
-- **Acciones:** ser empujado, deslizar, aplastar enemigo  
+- **Estados:** Static → Sliding → Destroyed
+- **Atributos:** posición en grid, desplazamiento (en tiles)
+- **Acciones:** ser empujado, deslizar, aplastar enemigo (detiene el movimiento y notifica bonus al GameManager)
 
 ---
 
