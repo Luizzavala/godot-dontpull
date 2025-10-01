@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://tests/integration/sandbox_scaling.gd" id="1"]
+
+[node name="SandboxScaling" type="Node2D"]
+script = ExtResource("1")
+
+[node name="UI" type="CanvasLayer" parent="."]
+layer = 1
+
+[node name="InfoLabel" type="Label" parent="UI"]
+unique_name_in_owner = true
+anchors_preset = 0
+offset_left = 16.0
+offset_top = 16.0
+text = "Nivel: - | Resolución: 0x0 | Zoom: 0.00\nFlechas: Izq/Der resolución, Arriba/Abajo nivel"

@@ -68,6 +68,22 @@ static func get_map_offset() -> Vector2:
     return _map_offset
 
 
+static func calculate_zoom_to_fit(grid_size: Vector2i, viewport_size: Vector2) -> Vector2:
+    """Calcula el zoom uniforme necesario para que el grid completo sea visible."""
+    var grid_pixel_size: Vector2 = Vector2(grid_size) * Consts.TILE_SIZE
+    if grid_pixel_size.x <= 0.0 or grid_pixel_size.y <= 0.0:
+        return Vector2.ONE
+    if viewport_size.x <= 0.0 or viewport_size.y <= 0.0:
+        return Vector2.ONE
+    var width_scale := viewport_size.x / grid_pixel_size.x
+    var height_scale := viewport_size.y / grid_pixel_size.y
+    var uniform_scale := min(width_scale, height_scale)
+    if uniform_scale <= 0.0:
+        return Vector2.ONE
+    var zoom_value := 1.0 / uniform_scale
+    return Vector2(zoom_value, zoom_value)
+
+
 static func calculate_center_offset(grid_size: Vector2i, viewport_size: Vector2) -> Vector2:
     """Calcula el offset necesario para centrar el mapa dentro del viewport."""
     var grid_pixel_size: Vector2 = Vector2(grid_size) * Consts.TILE_SIZE

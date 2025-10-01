@@ -4,9 +4,9 @@ extends Node2D
 const LevelScene: PackedScene = preload("res://scenes/core/Level.tscn")
 
 @export var resolutions: Array[Vector2i] = [
-    Vector2i(640, 640),
+    Vector2i(640, 480),
     Vector2i(960, 720),
-    Vector2i(1280, 720),
+    Vector2i(1280, 960),
 ]
 
 var _resolution_index := 0
