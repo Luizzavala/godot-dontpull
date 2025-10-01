@@ -17,6 +17,21 @@ margin_top = 16.0
 text = "Nivel"
 vertical_alignment = 1
 
+[node name="HighScoreContainer" type="HBoxContainer" parent="Root"]
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -160.0
+margin_top = 48.0
+margin_right = 160.0
+alignment = 1
+
+[node name="HighScoreTitle" type="Label" parent="Root/HighScoreContainer"]
+text = "High Score:"
+
+[node name="HighScoreValue" type="Label" parent="Root/HighScoreContainer"]
+unique_name_in_owner = true
+text = "0"
+
 [node name="ScoreContainer" type="HBoxContainer" parent="Root"]
 anchor_left = 1.0
 anchor_right = 1.0
@@ -77,3 +92,43 @@ vertical_alignment = 1
 theme_override_colors/font_color = Color(1, 0.890196, 0.356863, 1)
 theme_override_font_sizes/font_size = 42
 text = "LEVEL CLEAR!"
+
+[node name="HighScorePanel" type="Panel" parent="Root"]
+unique_name_in_owner = true
+visible = false
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+margin_left = -140.0
+margin_top = -96.0
+margin_right = 140.0
+margin_bottom = 96.0
+
+[node name="PanelContainer" type="MarginContainer" parent="Root/HighScorePanel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/margin_left = 16
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 16
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Root/HighScorePanel/PanelContainer"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+theme_override_constants/separation = 12
+
+[node name="HighScoreMessage" type="Label" parent="Root/HighScorePanel/PanelContainer/VBoxContainer"]
+text = "INGRESA TUS INICIALES"
+horizontal_alignment = 1
+
+[node name="InitialsInput" type="LineEdit" parent="Root/HighScorePanel/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+max_length = 3
+horizontal_alignment = 1
+caret_blink = true
+
+[node name="SubmitInitialsButton" type="Button" parent="Root/HighScorePanel/PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+text = "Guardar"
