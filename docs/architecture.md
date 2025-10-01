@@ -42,6 +42,9 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
 - **Assets**
   - Spritesheets (placeholders o extraídos de ROM).
   - Audio SFX/Music (placeholders o libres de derechos).
+- **Audio Layer**
+  - Autoload `AudioManager` centraliza BGM y SFX dummy.
+  - Hooks independientes por evento de gameplay para facilitar sustitución por assets finales.
 - **Testing & Debug**
   - Logs de comportamiento (frame stepping).
   - Herramientas de replay simple.

@@ -76,6 +76,9 @@ func set_lives(value: int) -> void:
     if _lives <= 0:
         _is_game_over = true
         game_over.emit()
+        var audio_manager := _get_audio_manager()
+        if audio_manager:
+            audio_manager.play_game_over()
 
 func start_level(level_name: String = "", level_file: String = "") -> void:
     """Propaga el inicio del nivel actual al HUD."""
@@ -95,6 +98,9 @@ func start_level(level_name: String = "", level_file: String = "") -> void:
         return
     _current_level_name = resolved_name
     level_started.emit(_current_level_name)
+    var audio_manager := _get_audio_manager()
+    if audio_manager:
+        audio_manager.play_bgm()
 
 func register_enemy(enemy: Enemy) -> void:
     """Añade enemigos activos para referencia rápida."""
@@ -108,6 +114,9 @@ func unregister_enemy(enemy: Enemy) -> void:
 func on_enemy_defeated(enemy: Enemy) -> void:
     """Elimina la referencia del enemigo y suma score."""
     _enemies.erase(enemy)
+    var audio_manager := _get_audio_manager()
+    if audio_manager:
+        audio_manager.play_enemy_crush()
     add_score(Consts.ENEMY_SCORE)
     if _enemies.is_empty():
         _handle_level_cleared()
@@ -137,6 +146,9 @@ func return_to_menu() -> void:
     lives_changed.emit(_lives)
     _high_score = HighScoreService.get_high_score_value()
     high_score_changed.emit(_high_score)
+    var audio_manager := _get_audio_manager()
+    if audio_manager:
+        audio_manager.stop_bgm()
     get_tree().change_scene_to_file(Consts.MAIN_MENU_SCENE_PATH)
 
 func get_player() -> Player:
@@ -241,3 +253,12 @@ func _refresh_high_score() -> void:
     """Sincroniza el valor del high score desde el servicio persistente."""
     _high_score = HighScoreService.get_high_score_value()
     high_score_changed.emit(_high_score)
+
+func _get_audio_manager() -> AudioManager:
+    var tree := get_tree()
+    if tree == null:
+        return null
+    var root := tree.root
+    if root == null:
+        return null
+    return root.get_node_or_null("AudioManager") as AudioManager
