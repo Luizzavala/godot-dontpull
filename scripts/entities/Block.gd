@@ -28,7 +28,7 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
     """Actualiza el estado del bloque cada frame de física."""
     match current_state:
-        Enums.BlockState.SLIDING:
+        Enums.BlockState.LAUNCHED:
             _process_sliding(delta)
         Enums.BlockState.DESTROYED:
             queue_free()
@@ -58,7 +58,7 @@ func request_slide(direction: Vector2i) -> bool:
     _slide_origin = target_position
     target_position = final_destination
     _launch_direction = direction
-    current_state = Enums.BlockState.SLIDING
+    current_state = Enums.BlockState.LAUNCHED
     _play_launch_feedback()
     return true
 
@@ -82,7 +82,7 @@ func destroy_block() -> void:
 
 func _on_body_entered(body: Node) -> void:
     """Gestiona la colisión con enemigos durante el deslizamiento."""
-    if current_state != Enums.BlockState.SLIDING:
+    if current_state != Enums.BlockState.LAUNCHED:
         return
     if body is Enemy:
         _resolve_enemy_collision(body as Enemy)
@@ -120,7 +120,7 @@ func _finalize_slide() -> void:
 func occupies_world_position(world_position: Vector2) -> bool:
     """Indica si el bloque ocupa la casilla solicitada durante o después del deslizamiento."""
     var tolerance := 1.0
-    if current_state == Enums.BlockState.SLIDING:
+    if current_state == Enums.BlockState.LAUNCHED:
         if target_position.distance_to(world_position) < tolerance:
             return true
         if _slide_origin.distance_to(world_position) < tolerance:
