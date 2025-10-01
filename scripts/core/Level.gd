@@ -16,6 +16,7 @@ const PowerUpScene: PackedScene = preload("res://scenes/entities/PowerUp.tscn")
 @onready var hud: HUD = %HUD
 @onready var non_playable_background: ColorRect = %NonPlayableBackground
 @onready var playable_area_rect: ColorRect = %PlayableArea
+@onready var camera: Camera2D = %Camera2D
 var _current_grid_size: Vector2i = Vector2i(Consts.GRID_WIDTH, Consts.GRID_HEIGHT)
 var _level_name: String = ""
 
@@ -63,7 +64,8 @@ func _apply_level_data(data: Dictionary) -> void:
 
 func _update_map_layout() -> void:
     var viewport_size: Vector2 = get_viewport_rect().size
-    var offset: Vector2 = GameHelpers.calculate_center_offset(_current_grid_size, viewport_size)
+    var grid_pixel_size: Vector2 = Vector2(_current_grid_size) * Consts.TILE_SIZE
+    var offset: Vector2 = GameHelpers.calculate_center_offset(_current_grid_size, viewport_size).floor()
     GameHelpers.set_map_offset(offset)
     tile_map.position = offset
     if is_instance_valid(non_playable_background):
@@ -71,7 +73,13 @@ func _update_map_layout() -> void:
         non_playable_background.size = viewport_size
     if is_instance_valid(playable_area_rect):
         playable_area_rect.position = offset
-        playable_area_rect.size = Vector2(_current_grid_size) * Consts.TILE_SIZE
+        playable_area_rect.size = grid_pixel_size
+    if is_instance_valid(camera):
+        camera.position = offset + grid_pixel_size * 0.5
+        camera.limit_left = int(offset.x)
+        camera.limit_top = int(offset.y)
+        camera.limit_right = int(offset.x + grid_pixel_size.x)
+        camera.limit_bottom = int(offset.y + grid_pixel_size.y)
 
 func _populate_tile_map(width: int, height: int) -> void:
     tile_map.clear()
