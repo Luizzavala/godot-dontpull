@@ -30,7 +30,7 @@ El objetivo es replicar mecánicas originales en grid, manteniendo arquitectura 
 - [x] Implementación de mecánicas/gameplay originales de Don’t Pull (Capcom)
 - [x] Ajuste de resolución, escalado y centrado del área jugable
 - [x] Sistema de transición de niveles (pasar al siguiente al derrotar enemigos)
-- [ ] Sistema de puntuación arcade y tabla de récords (High Score)
+- [x] Sistema de puntuación arcade y tabla de récords (High Score)
 - [ ] Hooks de música y efectos de sonido (dummy)
 - [ ] Animaciones retro (dummy)
 - [ ] Pantalla de introducción / attract mode

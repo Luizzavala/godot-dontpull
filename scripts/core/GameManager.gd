@@ -2,12 +2,14 @@
 extends Node
 
 const Consts = preload("res://scripts/utils/constants.gd")
+const HighScoreService = preload("res://scripts/core/HighScoreService.gd")
 signal score_changed(new_score: int)
 signal lives_changed(new_lives: int)
 signal level_started(level_name: String)
 signal level_cleared(level_name: String)
 signal level_transition_queued(next_level_file: String)
 signal game_over()
+signal high_score_changed(new_high_score: int)
 var _player: Player
 var _score := 0
 var _lives := Consts.START_LIVES
@@ -18,9 +20,12 @@ var _level_sequence: Array = Consts.LEVEL_SEQUENCE.duplicate()
 var _current_level_index := 0
 var _queued_level_file: String = Consts.DEFAULT_LEVEL_FILE
 var _is_transitioning := false
+var _high_score := 0
+var _is_game_over := false
 func _ready() -> void:
     """Emite el estado inicial al arrancar el autoload."""
     get_tree().scene_changed.connect(_on_scene_changed)
+    _refresh_high_score()
     score_changed.emit(_score)
     lives_changed.emit(_lives)
     _queued_level_file = _get_default_level_file()
@@ -32,9 +37,12 @@ func start_new_game() -> void:
     _current_level_name = ""
     _current_level_file = ""
     _is_transitioning = false
+    _is_game_over = false
     _enemies.clear()
     score_changed.emit(_score)
     lives_changed.emit(_lives)
+    _high_score = HighScoreService.get_high_score_value()
+    high_score_changed.emit(_high_score)
     _queued_level_file = _get_default_level_file()
     var tree := get_tree()
     if tree:
@@ -48,17 +56,25 @@ func register_hud(_hud: HUD) -> void:
     """Asocia el HUD activo y le envía el estado global."""
     score_changed.emit(_score)
     lives_changed.emit(_lives)
+    _high_score = HighScoreService.get_high_score_value()
+    high_score_changed.emit(_high_score)
 
 func add_score(value: int) -> void:
     """Incrementa el score global y notifica el cambio."""
+    if _is_game_over:
+        return
     _score += value
     score_changed.emit(_score)
+    if _score > _high_score:
+        _high_score = _score
+        high_score_changed.emit(_high_score)
 
 func set_lives(value: int) -> void:
     """Actualiza las vidas del jugador y dispara la señal correspondiente."""
     _lives = value
     lives_changed.emit(_lives)
     if _lives <= 0:
+        _is_game_over = true
         game_over.emit()
 
 func start_level(level_name: String = "", level_file: String = "") -> void:
@@ -101,8 +117,6 @@ func on_player_defeated() -> void:
     set_lives(_lives - 1)
     if _lives > 0:
         restart_level()
-    else:
-        return_to_menu()
 
 func restart_level() -> void:
     """Recarga el nivel actual si existe."""
@@ -117,9 +131,12 @@ func return_to_menu() -> void:
     _current_level_file = ""
     _queued_level_file = _get_default_level_file()
     _is_transitioning = false
+    _is_game_over = false
     _enemies.clear()
     score_changed.emit(_score)
     lives_changed.emit(_lives)
+    _high_score = HighScoreService.get_high_score_value()
+    high_score_changed.emit(_high_score)
     get_tree().change_scene_to_file(Consts.MAIN_MENU_SCENE_PATH)
 
 func get_player() -> Player:
@@ -129,6 +146,24 @@ func get_player() -> Player:
 func notify_player_step() -> void:
     """Suma score por cada paso válido del jugador."""
     add_score(Consts.STEP_SCORE)
+
+func submit_final_score(initials: String) -> void:
+    """Registra el score actual en la tabla de récords y vuelve al menú."""
+    if not _is_game_over:
+        return_to_menu()
+        return
+    HighScoreService.submit_score(initials, _score)
+    _refresh_high_score()
+    return_to_menu()
+
+func get_high_scores() -> Array[Dictionary]:
+    """Devuelve la lista de puntuaciones registradas."""
+    return HighScoreService.get_high_scores()
+
+func get_high_score() -> int:
+    """Devuelve el valor más alto registrado."""
+    _high_score = HighScoreService.get_high_score_value()
+    return _high_score
 
 func _on_scene_changed(new_scene: Node) -> void:
     """Detecta cambios de escena para iniciar niveles automáticamente."""
@@ -201,3 +236,8 @@ func _update_current_level_index() -> void:
         return
     var index := _level_sequence.find(_current_level_file)
     _current_level_index = index if index != -1 else 0
+
+func _refresh_high_score() -> void:
+    """Sincroniza el valor del high score desde el servicio persistente."""
+    _high_score = HighScoreService.get_high_score_value()
+    high_score_changed.emit(_high_score)
