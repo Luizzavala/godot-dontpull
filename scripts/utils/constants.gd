@@ -16,3 +16,5 @@ const ENEMY_CHASE_RANGE := 2
 const CARDINAL_DIRECTIONS := [Vector2i.UP, Vector2i.DOWN, Vector2i.LEFT, Vector2i.RIGHT]
 const LEVEL_SCENE_PATH := "res://scenes/core/Level.tscn"
 const MAIN_MENU_SCENE_PATH := "res://scenes/core/MainMenu.tscn"
+const LEVELS_DIR := "res://levels/"
+const DEFAULT_LEVEL_FILE := "level_01.json"

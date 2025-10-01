@@ -36,6 +36,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
   - Menú inicial y selección de nivel.
 - **Data Layer**
   - Carga de niveles desde JSON/TSV.
+  - `LevelLoader` convierte JSON en datos estructurados para la escena `Level`.
   - Configuración de enemigos y power-ups.
 - **Assets**
   - Spritesheets (placeholders o extraídos de ROM).
@@ -48,7 +49,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
 
 ## Flujo principal del juego
 1. **Init →** carga escena `MainMenu`.
-2. **Level Start →** spawnea jugador, enemigos y bloques desde layout JSON.
+2. **Level Start →** `Level` solicita a `LevelLoader` el layout JSON y spawnea jugador, enemigos y bloques.
 3. **Gameplay Loop →**
    - Jugador mueve en grid.
    - Empuje de bloques → bloques deslizan hasta colisión.
