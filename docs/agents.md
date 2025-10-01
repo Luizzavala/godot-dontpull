@@ -47,7 +47,7 @@ stateDiagram-v2
 ---
 
 ## Bloques (Block)
-- **Estados:** Static → Sliding → Destroyed
+- **Estados:** Static → Launched → Destroyed
 - **Atributos:** posición en grid, desplazamiento (en tiles)
 - **Acciones:** ser empujado, deslizar, aplastar enemigo (detiene el movimiento y notifica bonus al GameManager)
 
