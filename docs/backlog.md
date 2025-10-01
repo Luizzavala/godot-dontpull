@@ -210,3 +210,35 @@ El objetivo es replicar fielmente las mecánicas del arcade original, para que e
 - /tests/integration/sandbox_labyrinth.tscn → nivel de prueba con laberinto y mecánicas completas.
 
 ---
+
+## Ajuste de resolución, escalado y centrado del área jugable
+
+Actualmente, aunque las colisiones del grid funcionan correctamente, el área jugable se renderiza como un bloque pequeño en la esquina de la pantalla, dejando gran parte de la ventana en negro.
+El objetivo es que el área de juego:
+1. Se centre siempre en la pantalla.
+2. Se escale proporcionalmente para ocupar un área visible adecuada, sin deformarse.
+3. Mantenga la proporción clásica tipo arcade (4:3) o la definida en Consts.
+
+### Requerimientos técnicos
+- **Project Settings → Display → Window**
+  - Definir una resolución base fija (ej. 320×240 o 640×480).
+  - `stretch/mode = 2d`.
+  - `stretch/aspect = keep` (o `keep_width`/`keep_height` según diseño).
+- **Camera2D en Level**
+  - Añadir nodo `Camera2D` como hijo de Level.
+  - `current = true`.
+  - Ajustar `zoom` dinámicamente según tamaño del grid (`grid_size * TILE_SIZE`) y el viewport.
+  - Asegurar que el área jugable quede centrada en pantalla.
+- **Centrado del HUD**
+  - Verificar que HUD se alinee al viewport, no al tamaño del grid, para que mantenga posiciones correctas tras el escalado.
+
+### Cambios en el código
+- En `Level.gd`: calcular tamaño total del mapa y aplicar zoom a la cámara para que se ajuste.
+- En `HUD.gd`: usar `anchor` y `margin` relativos al viewport para que score, timer, level y vidas no se desplacen con el zoom.
+
+### Tests
+- /tests/unit/test_camera_center.gd → validar que el área jugable queda centrada en pantalla tras cargar un nivel.
+- /tests/unit/test_aspect_ratio.gd → validar que el escalado respeta la relación de aspecto definida.
+- /tests/integration/sandbox_scaling.tscn → cargar varios niveles con distintos grid_size y comprobar visualmente que ocupan un área proporcional de la pantalla, siempre centrados.
+
+---
