@@ -54,6 +54,7 @@ Clonar en Godot el juego arcade *Don’t Pull* (Capcom, 1991 dentro de Three Won
    - Jugador mueve en grid.
    - Empuje de bloques → bloques deslizan hasta colisión.
    - Colisiones con enemigos → muerte o puntuación.
+   - Bloques aplastan enemigos durante el deslizamiento y notifican bonus al GameManager.
    - Timer / condiciones de victoria → siguiente nivel.
 4. **Game Over / Victory →** HUD muestra resultados, retorna a menú.
 
