@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="PackedScene" path="res://scenes/core/HUD.tscn" id="1"]
+[ext_resource type="Script" path="res://tests/integration/sandbox_hud.gd" id="2"]
+
+[node name="HUDSandbox" type="Node2D"]
+script = ExtResource("2")
+
+[node name="HUD" parent="." instance=ExtResource("1")]
