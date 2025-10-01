@@ -6,35 +6,57 @@
 script = ExtResource("1")
 layer = 1
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Root" type="Control" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
+
+[node name="LevelValue" type="Label" parent="Root"]
+unique_name_in_owner = true
 margin_left = 16.0
 margin_top = 16.0
+text = "Nivel"
+vertical_alignment = 1
+
+[node name="ScoreContainer" type="HBoxContainer" parent="Root"]
+anchor_left = 1.0
+anchor_right = 1.0
+margin_left = -220.0
+margin_top = 16.0
 margin_right = -16.0
-margin_bottom = -16.0
+alignment = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
-custom_minimum_size = Vector2(0, 120)
-
-[node name="ScoreRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
-
-[node name="ScoreTitle" type="Label" parent="MarginContainer/VBoxContainer/ScoreRow"]
+[node name="ScoreTitle" type="Label" parent="Root/ScoreContainer"]
 text = "Score:"
 
-[node name="ScoreLabel" type="Label" parent="MarginContainer/VBoxContainer/ScoreRow"]
+[node name="ScoreValue" type="Label" parent="Root/ScoreContainer"]
 unique_name_in_owner = true
 text = "0"
 
-[node name="LivesRow" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="TimerLabel" type="Label" parent="Root"]
+unique_name_in_owner = true
+anchor_left = 0.5
+anchor_right = 0.5
+margin_left = -80.0
+margin_top = 16.0
+margin_right = 80.0
+horizontal_alignment = 1
+text = "00:00"
+vertical_alignment = 1
 
-[node name="LivesTitle" type="Label" parent="MarginContainer/VBoxContainer/LivesRow"]
+[node name="LivesContainer" type="HBoxContainer" parent="Root"]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -120.0
+margin_top = -48.0
+margin_right = 120.0
+margin_bottom = -16.0
+alignment = 1
+
+[node name="LivesTitle" type="Label" parent="Root/LivesContainer"]
 text = "Vidas:"
 
-[node name="LivesLabel" type="Label" parent="MarginContainer/VBoxContainer/LivesRow"]
+[node name="LivesValue" type="Label" parent="Root/LivesContainer"]
 unique_name_in_owner = true
 text = "3"
-
-[node name="LevelLabel" type="Label" parent="MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-text = "Nivel"
