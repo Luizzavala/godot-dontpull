@@ -22,6 +22,7 @@
 - [x] Corrección de parseo JSON en HighScoreService
 - [x] Hooks de música y efectos de sonido (dummy)
 - [x] Corrección de conflicto de AudioManager (autoload vs class_name) y variables mal tipadas
+- [ ] Corrección de escalado y centrado visual del área jugable
 - [ ] Animaciones retro (dummy)
 - [ ] Pantalla de introducción / attract mode
 - [ ] Balance y dificultad progresiva

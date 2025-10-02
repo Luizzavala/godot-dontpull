@@ -107,7 +107,8 @@ func _initialize_players() -> void:
         player.autoplay = false
         player.bus = "Master"
         player.process_mode = Node.PROCESS_MODE_ALWAYS
-    var bgm_player := _players.get(EVENT_BGM, null)
+
+    var bgm_player: AudioStreamPlayer = _players.get(EVENT_BGM, null)
     if bgm_player and not bgm_player.finished.is_connected(_on_bgm_finished):
         bgm_player.finished.connect(_on_bgm_finished)
 

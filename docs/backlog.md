@@ -336,3 +336,29 @@ class_name AudioManager
 extends Node
 
 ---
+
+## Corrección de escalado y centrado visual del área jugable
+
+### Problema
+- El grid aparece pequeño y desalineado en la esquina del viewport.
+- El zoom no escala correctamente al área jugable definida en JSON.
+- El HUD queda mal ubicado respecto al área visible.
+
+### Requerimiento
+1. Configurar Project Settings:
+   - `Display/Window/stretch/mode = 2d`
+   - `Display/Window/stretch/aspect = keep`
+   - `Display/Window/size = 640x480` (resolución arcade base).
+2. En `Level.tscn`:
+   - Añadir un `Camera2D` con `current = true`.
+   - Calcular el zoom dinámico con `Helpers.calculate_zoom_to_fit`.
+   - Centrar el área jugable con `Helpers.calculate_center_offset`.
+3. El HUD debe estar en un `CanvasLayer` para no deformarse con el zoom.
+4. Validar que todos los niveles (de `/levels`) se escalen y centren correctamente en distintas resoluciones de ventana.
+
+### Tests
+- /tests/integration/sandbox_scaling.tscn para validar escalado.
+- /tests/unit/test_camera_center.gd para verificar que el área jugable queda centrada en pantalla.
+- Revisar que el HUD permanece fijo en pantalla al cambiar de nivel o tamaño de ventana.
+
+---
