@@ -334,6 +334,7 @@ Actualmente el script `AudioManager.gd` declara:
 ```gdscript
 class_name AudioManager
 extends Node
+```
 
 ---
 
@@ -361,4 +362,31 @@ extends Node
 - /tests/unit/test_camera_center.gd para verificar que el área jugable queda centrada en pantalla.
 - Revisar que el HUD permanece fijo en pantalla al cambiar de nivel o tamaño de ventana.
 
+---
+
+## Corrección de escalado y centrado visual en Camera2D
+- Problema: El grid aparece pequeño y desplazado en la esquina, no centrado.
+- Solución:
+  - Añadir Camera2D en Level.tscn con current=true.
+  - Usar Helpers.calculate_zoom_to_fit(grid_size, viewport_size) para ajustar zoom.
+  - Usar Helpers.calculate_center_offset para centrar.
+  - Aplicar zoom y position al Camera2D, no al TileMap.
+
+---
+
+## Separación de HUD en CanvasLayer
+- Problema: El HUD se deforma y se desplaza con el zoom del nivel.
+- Solución:
+  - Mover HUD a un nodo CanvasLayer.
+  - Asegurar anchors relativos a viewport (esquinas, centro).
+
+---
+
+## Ajuste de configuración de ventana
+- Problema: El juego no respeta relación de aspecto arcade.
+- Solución:
+  - En project.godot, establecer:
+    - `Display/Window/stretch/mode = 2d`
+    - `Display/Window/stretch/aspect = keep`
+    - `Display/Window/size = 640x480`
 ---
