@@ -390,3 +390,67 @@ extends Node
     - `Display/Window/stretch/aspect = keep`
     - `Display/Window/size = 640x480`
 ---
+
+## Corrección de escalado y centrado visual en Camera2D
+**Problema:**
+El área jugable (TileMap) aparece pequeña y desplazada. No se ajusta al viewport ni se centra como en el arcade original.
+
+**Requerimiento técnico:**
+- Añadir un `Camera2D` como hijo en `Level.tscn`.
+- En `Level.gd`, calcular el tamaño real del grid en píxeles:
+  ```gdscript
+  var grid_pixel_size: Vector2 = Vector2(grid_size) * Consts.TILE_SIZE
+  var viewport_size: Vector2 = get_viewport().get_visible_rect().size
+
+**Calcular zoom uniforme (usar el mínimo de ancho/alto):**
+  var zoom: float = min(viewport_size.x / grid_pixel_size.x, viewport_size.y / grid_pixel_size.y)
+  $Camera2D.zoom = Vector2(1.0 / zoom, 1.0 / zoom)
+
+**Centrar el área jugable:**
+  var offset: Vector2 = (viewport_size - grid_pixel_size * zoom) * 0.5
+  $Camera2D.position = offset
+**El cálculo debe integrarse en _ready() y ejecutarse también al size_changed del viewport.**
+
+Tests:
+
+/tests/unit/test_camera_center.gd → validar que el área jugable se centra en pantalla.
+/tests/integration/sandbox_scaling.tscn → probar niveles con distintos tamaños de grid.
+---
+
+## Migración del HUD a CanvasLayer
+
+Problema:
+El HUD se deforma con el zoom de la cámara, en lugar de permanecer fijo en pantalla.
+
+Requerimiento técnico:
+
+En HUD.tscn, envolver todos los nodos de UI en un CanvasLayer.
+Asegurar que los labels (score, timer, level, vidas) usen anchors relativos al viewport:
+Score → esquina superior derecha (anchor_right = 1.0).
+Timer → centrado arriba (anchor_left = 0.5, anchor_right = 0.5).
+Level → esquina superior izquierda (anchor_left = 0.0).
+Vidas → centrado abajo (anchor_bottom = 1.0).
+El HUD debe ser independiente del Camera2D y no moverse con el zoom.
+
+Tests:
+/tests/unit/test_hud_layout.gd → validar posiciones de los labels tras un cambio de resolución.
+/tests/integration/sandbox_hud.tscn → validar que HUD no se deforma al escalar el mapa.
+---
+
+## Configuración de ventana con resolución arcade
+
+Problema:
+El juego no respeta la relación de aspecto arcade y muestra áreas negras o deformadas.
+
+Requerimiento técnico:
+En project.godot:
+display/window/size/width = 640
+display/window/size/height = 480
+display/window/stretch/mode = "2d"
+display/window/stretch/aspect = "keep"
+Esto asegura proporción 4:3 clásica, escalada proporcional en fullscreen o ventana.
+
+Tests:
+/tests/unit/test_window_config.gd → validar que ProjectSettings carga los valores correctos.
+/tests/integration/sandbox_resolution.tscn → probar en distintos tamaños de ventana para confirmar que mantiene proporción.
+---

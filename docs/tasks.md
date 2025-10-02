@@ -26,6 +26,9 @@
 - [x] Corrección de escalado y centrado visual en Camera2D
 - [x] Separación de HUD en CanvasLayer para evitar deformación por zoom
 - [x] Ajuste de configuración de ventana (stretch/mode=2d, aspect=keep, size=640x480)
+- [ ] Corrección de escalado y centrado visual en Camera2D
+- [ ] Migración del HUD a CanvasLayer
+- [ ] Configuración de ventana con resolución arcade (640x480, stretch=2d, aspect=keep)
 - [ ] Animaciones retro (dummy)
 - [ ] Pantalla de introducción / attract mode
 - [ ] Balance y dificultad progresiva
