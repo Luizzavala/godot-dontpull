@@ -23,7 +23,7 @@
 - [x] Hooks de música y efectos de sonido (dummy)
 - [x] Corrección de conflicto de AudioManager (autoload vs class_name) y variables mal tipadas
 - [x] Corrección de escalado y centrado visual del área jugable
-- [ ] Corrección de escalado y centrado visual en Camera2D
+- [x] Corrección de escalado y centrado visual en Camera2D
 - [ ] Separación de HUD en CanvasLayer para evitar deformación por zoom
 - [ ] Ajuste de configuración de ventana (stretch/mode=2d, aspect=keep, size=640x480)
 - [ ] Animaciones retro (dummy)

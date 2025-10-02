@@ -70,8 +70,12 @@ func _apply_level_data(data: Dictionary) -> void:
 func _update_map_layout() -> void:
     var viewport_size: Vector2 = get_viewport_rect().size
     var grid_pixel_size: Vector2 = Vector2(_current_grid_size) * Consts.TILE_SIZE
+    var previous_offset: Vector2 = GameHelpers.get_map_offset()
     var offset: Vector2 = GameHelpers.calculate_center_offset(_current_grid_size, viewport_size).floor()
     GameHelpers.set_map_offset(offset)
+    var offset_delta: Vector2 = offset - previous_offset
+    if not offset_delta.is_equal_approx(Vector2.ZERO):
+        _apply_offset_delta(offset_delta)
     tile_map.position = offset
     if is_instance_valid(non_playable_background):
         non_playable_background.position = Vector2.ZERO
@@ -86,6 +90,51 @@ func _update_map_layout() -> void:
         camera.limit_top = int(offset.y)
         camera.limit_right = int(offset.x + grid_pixel_size.x)
         camera.limit_bottom = int(offset.y + grid_pixel_size.y)
+
+func _apply_offset_delta(delta: Vector2) -> void:
+    if delta.is_equal_approx(Vector2.ZERO):
+        return
+    _offset_player(delta)
+    _offset_blocks(delta)
+    _offset_enemies(delta)
+    _offset_power_ups(delta)
+
+func _offset_player(delta: Vector2) -> void:
+    if not is_instance_valid(player):
+        return
+    player.global_position += delta
+    player.target_position += delta
+
+func _offset_blocks(delta: Vector2) -> void:
+    if not is_instance_valid(block_container):
+        return
+    for child: Node in block_container.get_children():
+        if child is Node2D:
+            (child as Node2D).global_position += delta
+        if child is Block:
+            var block: Block = child
+            block.target_position += delta
+            var slide_origin: Variant = block.get("_slide_origin")
+            if slide_origin is Vector2:
+                block.set("_slide_origin", slide_origin + delta)
+
+func _offset_enemies(delta: Vector2) -> void:
+    if not is_instance_valid(enemy_container):
+        return
+    for child: Node in enemy_container.get_children():
+        if child is Node2D:
+            (child as Node2D).global_position += delta
+        if child is Enemy:
+            (child as Enemy).target_position += delta
+
+func _offset_power_ups(delta: Vector2) -> void:
+    if not is_instance_valid(power_up_container):
+        return
+    for child: Node in power_up_container.get_children():
+        if child is Node2D:
+            (child as Node2D).global_position += delta
+        if child is PowerUp:
+            (child as PowerUp).target_position += delta
 
 func _populate_tile_map(width: int, height: int) -> void:
     tile_map.clear()
